@@ -1,0 +1,5 @@
+User-agent: *
+
+Allow: /
+
+Sitemap: https://ssrweb197.github.io/pdf-tools-hub/sitemap.xml
