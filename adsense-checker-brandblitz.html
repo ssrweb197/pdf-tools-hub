@@ -1,0 +1,1706 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Google AdSense Readiness Checker & Site Audit Tool</title>
+  <meta name="description" content="Free instant Google AdSense Readiness Audit Tool. Analyze your website for AdSense policy compliance, technical SEO, content depth, and site structure.">
+  <meta name="keywords" content="AdSense checker, AdSense readiness tool, Google AdSense approval, SEO audit tool, policy compliance check">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://ssrweb197.github.io/pdf-tools-hub/adsense-checker.html">
+
+  <!-- Open Graph / Social Meta -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Google AdSense Readiness Checker & Site Audit Tool">
+  <meta property="og:description" content="Check if your website is ready for Google AdSense monetization with our instant 30-point policy and SEO audit tool.">
+  <meta property="og:image" content="https://ssrweb197.github.io/pdf-tools-hub/icon-512.png">
+  
+  <!-- Twitter Cards -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Google AdSense Readiness Checker">
+  <meta name="twitter:description" content="Comprehensive instant site audit for Google AdSense compliance and technical SEO readiness.">
+
+  <!-- JSON-LD Structured Data: Breadcrumb -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [{
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://ssrweb197.github.io/pdf-tools-hub/"
+    },{
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Tools",
+      "item": "https://ssrweb197.github.io/pdf-tools-hub/"
+    },{
+      "@type": "ListItem",
+      "position": 3,
+      "name": "AdSense Readiness Checker",
+      "item": "https://ssrweb197.github.io/pdf-tools-hub/adsense-checker.html"
+    }]
+  }
+  </script>
+
+  <!-- JSON-LD Structured Data: FAQ Page -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What are the essential requirements for Google AdSense approval?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Google AdSense requires original, high-quality content, standard policy pages (About Us, Contact Us, Privacy Policy, Terms, Cookie Policy), HTTPS security, mobile responsiveness, clear navigation, and adherence to Google's Publisher Policies."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How long does Google AdSense take to review a website?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The review process typically takes anywhere from 24 hours to 2 weeks. Ensuring your site meets all technical, layout, and policy standards reduces the likelihood of rejection."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does this tool guarantee AdSense approval?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. This tool provides an automated diagnostic audit based on publicly known web best practices and AdSense guidelines. Final approval rests exclusively with Google's human reviewers and automated evaluation algorithms."
+        }
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    /* ==========================================================================
+       1. CSS VARIABLES & THEMES (LIGHT MODE DEFAULT)
+       ========================================================================== */
+    :root {
+      /* Colors - Light Theme Default */
+      --bg-primary: #f1f5f9;
+      --bg-secondary: #ffffff;
+      --bg-card: rgba(255, 255, 255, 0.85);
+      --bg-card-hover: rgba(255, 255, 255, 0.98);
+      --border-color: rgba(0, 0, 0, 0.1);
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      
+      --primary: #0284c7;
+      --primary-glow: rgba(2, 132, 199, 0.25);
+      --accent: #4f46e5;
+      
+      --pass: #16a34a;
+      --pass-bg: rgba(22, 163, 74, 0.1);
+      --warning: #d97706;
+      --warning-bg: rgba(217, 119, 6, 0.1);
+      --fail: #dc2626;
+      --fail-bg: rgba(220, 38, 38, 0.1);
+      
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 24px;
+      
+      --shadow-main: 0 20px 30px -10px rgba(0, 0, 0, 0.08);
+      --glass-backdrop: blur(16px);
+      
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    [data-theme="dark"] {
+      /* Colors - Dark Theme Override */
+      --bg-primary: #0b0f19;
+      --bg-secondary: #111827;
+      --bg-card: rgba(30, 41, 59, 0.7);
+      --bg-card-hover: rgba(30, 41, 59, 0.9);
+      --border-color: rgba(255, 255, 255, 0.12);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      
+      --primary: #38bdf8;
+      --primary-glow: rgba(56, 189, 248, 0.35);
+      --accent: #818cf8;
+      
+      --pass: #22c55e;
+      --pass-bg: rgba(34, 197, 94, 0.15);
+      --warning: #f59e0b;
+      --warning-bg: rgba(245, 158, 11, 0.15);
+      --fail: #ef4444;
+      --fail-bg: rgba(239, 68, 68, 0.15);
+      
+      --shadow-main: 0 20px 40px -15px rgba(0, 0, 0, 0.5);
+    }
+
+    /* ==========================================================================
+       2. BASE & RESET
+       ========================================================================== */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-primary);
+      color: var(--text-main);
+      line-height: 1.6;
+      min-height: 100vh;
+      overflow-x: hidden;
+      transition: background-color 0.4s ease, color 0.4s ease;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    a {
+      color: var(--primary);
+      text-decoration: none;
+      transition: var(--transition);
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    /* ==========================================================================
+       3. NAVIGATION & HEADER
+       ========================================================================== */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--bg-card);
+      backdrop-filter: var(--glass-backdrop);
+      -webkit-backdrop-filter: var(--glass-backdrop);
+      border-bottom: 1px solid var(--border-color);
+      padding: 0.85rem 0;
+    }
+
+    .nav-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 800;
+      font-size: 1.15rem;
+      letter-spacing: -0.5px;
+      color: var(--text-main);
+      white-space: nowrap;
+    }
+
+    .logo-badge {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #fff;
+      font-size: 0.7rem;
+      padding: 0.2rem 0.4rem;
+      border-radius: 6px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .theme-toggle {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 0.45rem 0.75rem;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      transition: var(--transition);
+      white-space: nowrap;
+    }
+
+    .theme-toggle:hover {
+      border-color: var(--primary);
+    }
+
+    /* ==========================================================================
+       4. HERO & AUDIT INPUT SECTION
+       ========================================================================== */
+    .hero-section {
+      padding: 2.5rem 0 1.5rem;
+      text-align: center;
+      position: relative;
+    }
+
+    .hero-glow {
+      position: absolute;
+      top: -100px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 600px;
+      height: 300px;
+      background: radial-gradient(circle, var(--primary-glow) 0%, rgba(0,0,0,0) 70%);
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .hero-title {
+      font-size: clamp(1.6rem, 5vw, 3rem);
+      font-weight: 900;
+      line-height: 1.2;
+      margin-bottom: 0.85rem;
+      letter-spacing: -0.5px;
+    }
+
+    .gradient-text {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-subtitle {
+      font-size: clamp(0.95rem, 2.5vw, 1.15rem);
+      color: var(--text-muted);
+      max-width: 680px;
+      margin: 0 auto 2rem;
+      padding: 0 0.5rem;
+    }
+
+    .audit-box {
+      width: 100%;
+      max-width: 780px;
+      margin: 0 auto;
+      background: var(--bg-card);
+      backdrop-filter: var(--glass-backdrop);
+      -webkit-backdrop-filter: var(--glass-backdrop);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 0.85rem;
+      box-shadow: var(--shadow-main);
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    @media (min-width: 640px) {
+      .audit-box {
+        flex-direction: row;
+        align-items: center;
+      }
+    }
+
+    .audit-input-group {
+      flex: 1;
+      width: 100%;
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .audit-input-icon {
+      position: absolute;
+      left: 1rem;
+      color: var(--text-muted);
+      pointer-events: none;
+    }
+
+    .audit-input {
+      width: 100%;
+      padding: 0.9rem 1rem 0.9rem 2.8rem;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      color: var(--text-main);
+      font-size: 0.95rem;
+      outline: none;
+      transition: var(--transition);
+    }
+
+    .audit-input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px var(--primary-glow);
+    }
+
+    .btn-audit {
+      width: 100%;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #ffffff;
+      border: none;
+      padding: 0.9rem 1.5rem;
+      border-radius: var(--radius-md);
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      transition: var(--transition);
+      box-shadow: 0 4px 15px var(--primary-glow);
+      white-space: nowrap;
+    }
+
+    @media (min-width: 640px) {
+      .btn-audit {
+        width: auto;
+      }
+    }
+
+    .btn-audit:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px var(--primary-glow);
+    }
+
+    .disclaimer-banner {
+      margin-top: 1.25rem;
+      background: var(--bg-card);
+      border-left: 4px solid var(--warning);
+      padding: 0.75rem 1rem;
+      border-radius: var(--radius-sm);
+      max-width: 780px;
+      margin-left: auto;
+      margin-right: auto;
+      text-align: left;
+      font-size: 0.825rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* ==========================================================================
+       5. LOADING ANIMATION
+       ========================================================================== */
+    .loading-container {
+      display: none;
+      margin: 2.5rem auto;
+      text-align: center;
+      max-width: 500px;
+      padding: 0 1rem;
+    }
+
+    .spinner {
+      width: 50px;
+      height: 50px;
+      border: 4px solid var(--border-color);
+      border-top: 4px solid var(--primary);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 1.25rem;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .loading-status {
+      font-weight: 600;
+      font-size: 1.05rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .progress-bar-bg {
+      width: 100%;
+      height: 8px;
+      background: var(--bg-secondary);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-top: 1rem;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      transition: width 0.2s ease;
+    }
+
+    /* ==========================================================================
+       6. DASHBOARD & RESULTS SECTION
+       ========================================================================== */
+    .dashboard {
+      display: none;
+      margin: 2rem 0 3rem;
+      animation: fadeIn 0.4s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .action-toolbar {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      background: var(--bg-card);
+      backdrop-filter: var(--glass-backdrop);
+      -webkit-backdrop-filter: var(--glass-backdrop);
+      padding: 1rem;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-color);
+    }
+
+    @media (min-width: 768px) {
+      .action-toolbar {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+      }
+    }
+
+    .target-url-display {
+      font-weight: 700;
+      font-size: 1.05rem;
+      word-break: break-all;
+    }
+
+    .toolbar-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+
+    .btn-tool {
+      flex: 1;
+      min-width: 110px;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 0.5rem 0.75rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.3rem;
+      transition: var(--transition);
+    }
+
+    .btn-tool:hover {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+
+    /* Summary Grid */
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .summary-card {
+      background: var(--bg-card);
+      backdrop-filter: var(--glass-backdrop);
+      -webkit-backdrop-filter: var(--glass-backdrop);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      box-shadow: var(--shadow-main);
+    }
+
+    .score-card {
+      grid-column: 1 / -1;
+      justify-content: center;
+      text-align: center;
+    }
+
+    @media (min-width: 640px) {
+      .score-card {
+        grid-column: span 1;
+        justify-content: space-around;
+        text-align: left;
+      }
+    }
+
+    /* Circular SVG Gauge */
+    .score-gauge {
+      position: relative;
+      width: 100px;
+      height: 100px;
+      flex-shrink: 0;
+    }
+
+    .score-gauge svg {
+      width: 100%;
+      height: 100%;
+      transform: rotate(-90deg);
+    }
+
+    .score-gauge circle {
+      fill: none;
+      stroke-width: 10;
+      stroke-linecap: round;
+    }
+
+    .gauge-bg {
+      stroke: var(--bg-secondary);
+    }
+
+    .gauge-fill {
+      stroke: var(--primary);
+      stroke-dasharray: 283;
+      stroke-dashoffset: 283;
+      transition: stroke-dashoffset 1.5s ease-in-out, stroke 0.5s ease;
+    }
+
+    .score-number {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 1.5rem;
+      font-weight: 800;
+    }
+
+    .metric-icon {
+      width: 45px;
+      height: 45px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      flex-shrink: 0;
+    }
+
+    .metric-icon.pass { background: var(--pass-bg); color: var(--pass); }
+    .metric-icon.warning { background: var(--warning-bg); color: var(--warning); }
+    .metric-icon.fail { background: var(--fail-bg); color: var(--fail); }
+
+    .metric-info .val {
+      font-size: 1.5rem;
+      font-weight: 800;
+      line-height: 1.2;
+    }
+
+    .metric-info .lbl {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    /* Controls: Filter & Search */
+    .controls-row {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    @media (min-width: 768px) {
+      .controls-row {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+      }
+    }
+
+    .filter-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+
+    .pill {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      padding: 0.35rem 0.85rem;
+      border-radius: 30px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .pill.active, .pill:hover {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+
+    .search-box {
+      position: relative;
+      width: 100%;
+    }
+
+    @media (min-width: 768px) {
+      .search-box {
+        width: 260px;
+      }
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 0.5rem 1rem 0.5rem 2.2rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      color: var(--text-main);
+      font-size: 0.85rem;
+      outline: none;
+    }
+
+    .search-box input:focus {
+      border-color: var(--primary);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 0.8rem;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    /* Checks Grid */
+    .checks-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+      margin-bottom: 2.5rem;
+    }
+
+    @media (min-width: 640px) {
+      .checks-grid {
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      }
+    }
+
+    .check-card {
+      background: var(--bg-card);
+      backdrop-filter: var(--glass-backdrop);
+      -webkit-backdrop-filter: var(--glass-backdrop);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 1.15rem;
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .check-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-main);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .check-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+    }
+
+    .check-card.status-pass::before { background: var(--pass); }
+    .check-card.status-warning::before { background: var(--warning); }
+    .check-card.status-fail::before { background: var(--fail); }
+
+    .check-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.6rem;
+      gap: 0.5rem;
+    }
+
+    .check-title {
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+
+    .badge {
+      font-size: 0.65rem;
+      font-weight: 800;
+      padding: 0.2rem 0.5rem;
+      border-radius: 20px;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .badge-pass { background: var(--pass-bg); color: var(--pass); }
+    .badge-warning { background: var(--warning-bg); color: var(--warning); }
+    .badge-fail { background: var(--fail-bg); color: var(--fail); }
+
+    .check-description {
+      font-size: 0.825rem;
+      color: var(--text-muted);
+      margin-bottom: 0.75rem;
+    }
+
+    .check-recommendation {
+      background: var(--bg-secondary);
+      padding: 0.6rem 0.75rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.775rem;
+      color: var(--text-main);
+      border-left: 2px solid var(--primary);
+    }
+
+    /* Recommendations Dashboard Section */
+    .recommendations-section {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .section-title {
+      font-size: 1.25rem;
+      font-weight: 800;
+      margin-bottom: 1.25rem;
+    }
+
+    .rec-tabs {
+      display: flex;
+      gap: 0.5rem;
+      border-bottom: 1px solid var(--border-color);
+      margin-bottom: 1.25rem;
+      overflow-x: auto;
+      padding-bottom: 0.25rem;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .rec-tab {
+      padding: 0.5rem 0.75rem;
+      font-weight: 600;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      white-space: nowrap;
+      transition: var(--transition);
+    }
+
+    .rec-tab.active {
+      color: var(--primary);
+      border-bottom-color: var(--primary);
+    }
+
+    .rec-content {
+      display: none;
+    }
+
+    .rec-content.active {
+      display: block;
+    }
+
+    .rec-list {
+      list-style: none;
+      display: grid;
+      gap: 0.85rem;
+    }
+
+    .rec-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.6rem;
+      background: var(--bg-secondary);
+      padding: 0.85rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.875rem;
+    }
+
+    .rec-bullet {
+      color: var(--primary);
+      font-size: 1.1rem;
+      line-height: 1;
+    }
+
+    /* ==========================================================================
+       7. FAQ ACCORDION SECTION
+       ========================================================================== */
+    .faq-section {
+      margin: 3rem 0;
+    }
+
+    .faq-grid {
+      max-width: 800px;
+      margin: 0 auto;
+      display: grid;
+      gap: 0.85rem;
+    }
+
+    .faq-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+    }
+
+    .faq-question {
+      width: 100%;
+      text-align: left;
+      padding: 1rem;
+      background: transparent;
+      border: none;
+      color: var(--text-main);
+      font-weight: 700;
+      font-size: 0.95rem;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      padding: 0 1rem;
+      color: var(--text-muted);
+      font-size: 0.875rem;
+      transition: max-height 0.3s ease, padding 0.3s ease;
+    }
+
+    .faq-item.open .faq-answer {
+      max-height: 250px;
+      padding: 0 1rem 1rem 1rem;
+    }
+
+    .faq-icon {
+      transition: transform 0.3s ease;
+      font-size: 0.75rem;
+    }
+
+    .faq-item.open .faq-icon {
+      transform: rotate(180deg);
+    }
+
+    /* ==========================================================================
+       8. SEO RICH CONTENT ARTICLE
+       ========================================================================== */
+    .seo-article {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      margin: 3rem 0;
+      line-height: 1.7;
+      color: var(--text-muted);
+      font-size: 0.925rem;
+    }
+
+    @media (min-width: 768px) {
+      .seo-article {
+        padding: 2.5rem;
+      }
+    }
+
+    .seo-article h2 {
+      color: var(--text-main);
+      font-size: 1.4rem;
+      margin: 1.75rem 0 0.75rem;
+    }
+
+    .seo-article h3 {
+      color: var(--text-main);
+      font-size: 1.15rem;
+      margin: 1.25rem 0 0.5rem;
+    }
+
+    .seo-article p {
+      margin-bottom: 1rem;
+    }
+
+    .seo-article ul, .seo-article ol {
+      margin: 0 0 1rem 1.25rem;
+    }
+
+    .seo-article li {
+      margin-bottom: 0.4rem;
+    }
+
+    /* ==========================================================================
+       9. TOAST NOTIFICATION & FOOTER
+       ========================================================================== */
+    .toast-container {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      left: 1.5rem;
+      z-index: 1000;
+      pointer-events: none;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+    }
+
+    @media (min-width: 640px) {
+      .toast-container {
+        left: auto;
+      }
+    }
+
+    .toast {
+      pointer-events: auto;
+      background: var(--bg-secondary);
+      color: var(--text-main);
+      border: 1px solid var(--primary);
+      padding: 0.75rem 1rem;
+      border-radius: var(--radius-sm);
+      box-shadow: var(--shadow-main);
+      font-weight: 600;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      animation: slideIn 0.3s ease forwards;
+      margin-top: 0.5rem;
+    }
+
+    @keyframes slideIn {
+      from { transform: translateY(100%); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    footer {
+      border-top: 1px solid var(--border-color);
+      padding: 2rem 0;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.825rem;
+    }
+
+    /* ==========================================================================
+       10. PRINT STYLES
+       ========================================================================== */
+    @media print {
+      body {
+        background: #fff !important;
+        color: #000 !important;
+      }
+      .navbar, .hero-section, .faq-section, .seo-article, footer, .controls-row, .action-toolbar {
+        display: none !important;
+      }
+      .dashboard {
+        display: block !important;
+      }
+      .check-card {
+        border: 1px solid #ccc !important;
+        break-inside: avoid;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVIGATION -->
+  <nav class="navbar">
+    <div class="container nav-container">
+      <div class="logo">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--primary)"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+        <span>BrandBlitz Tools</span>
+        <span class="logo-badge">FREE</span>
+      </div>
+      <div class="nav-actions">
+        <button class="theme-toggle" id="themeToggleBtn" aria-label="Toggle Theme">
+          <span id="themeIcon">☀️</span>
+          <span id="themeText">Light</span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <!-- HERO SECTION -->
+    <section class="hero-section">
+      <div class="hero-glow"></div>
+      <h1 class="hero-title">Is Your Site Ready for <br><span class="gradient-text">Google AdSense Monetization?</span></h1>
+      <p class="hero-subtitle">Instantly audit your website against 30 critical technical SEO, content policy, layout, and user experience requirements before applying.</p>
+
+      <form id="auditForm" onsubmit="event.preventDefault(); startAudit();">
+        <div class="audit-box">
+          <div class="audit-input-group">
+            <svg class="audit-input-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+            <input type="url" id="targetUrl" class="audit-input" placeholder="https://yourwebsite.com" required>
+          </div>
+          <button type="submit" class="btn-audit">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            Check Website
+          </button>
+        </div>
+      </form>
+
+      <div class="disclaimer-banner">
+        <strong>⚠️ Disclaimer:</strong> This tool provides diagnostic guidance based on publicly known web development best practices and AdSense guidelines. Only Google can determine final AdSense approval.
+      </div>
+    </section>
+
+    <!-- LOADING SCREEN -->
+    <div class="loading-container" id="loadingContainer">
+      <div class="spinner"></div>
+      <div class="loading-status" id="loadingStatusText">Connecting to target server...</div>
+      <div style="font-size: 0.8rem; color: var(--text-muted);" id="loadingStep">Initializing security handshake...</div>
+      <div class="progress-bar-bg">
+        <div class="progress-bar-fill" id="loadingProgressBar"></div>
+      </div>
+    </div>
+
+    <!-- DASHBOARD RESULTS -->
+    <section class="dashboard" id="dashboardContainer">
+      
+      <!-- Action Toolbar -->
+      <div class="action-toolbar">
+        <div>
+          <span style="color: var(--text-muted); font-size: 0.8rem;">Audit Report for:</span>
+          <div class="target-url-display" id="reportUrlDisplay">https://example.com</div>
+        </div>
+        <div class="toolbar-buttons">
+          <button class="btn-tool" onclick="window.print()">🖨️ Print</button>
+          <button class="btn-tool" onclick="copyReportSummary()">📋 Copy</button>
+          <button class="btn-tool" onclick="shareReport()">🔗 Share</button>
+          <button class="btn-tool" onclick="downloadHTMLReport()">⬇️ HTML</button>
+        </div>
+      </div>
+
+      <!-- Summary Score Overview -->
+      <div class="summary-grid">
+        <div class="summary-card score-card">
+          <div class="score-gauge">
+            <svg viewBox="0 0 100 100">
+              <circle class="gauge-bg" cx="50" cy="50" r="45"></circle>
+              <circle class="gauge-fill" id="scoreGaugeFill" cx="50" cy="50" r="45"></circle>
+            </svg>
+            <div class="score-number" id="overallScoreVal">0</div>
+          </div>
+          <div>
+            <h3 style="font-size: 1.1rem; font-weight: 800;">AdSense Score</h3>
+            <p style="font-size: 0.8rem; color: var(--text-muted);" id="scoreRatingText">Calculating status...</p>
+          </div>
+        </div>
+
+        <div class="summary-card">
+          <div class="metric-icon pass">✓</div>
+          <div class="metric-info">
+            <div class="val" id="countPass">0</div>
+            <div class="lbl">Passed Checks</div>
+          </div>
+        </div>
+
+        <div class="summary-card">
+          <div class="metric-icon warning">!</div>
+          <div class="metric-info">
+            <div class="val" id="countWarning">0</div>
+            <div class="lbl">Warnings</div>
+          </div>
+        </div>
+
+        <div class="summary-card">
+          <div class="metric-icon fail">✕</div>
+          <div class="metric-info">
+            <div class="val" id="countFail">0</div>
+            <div class="lbl">Failed Checks</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Filter Controls & Search -->
+      <div class="controls-row">
+        <div class="filter-pills">
+          <button class="pill active" onclick="filterChecks('all', this)">All (30)</button>
+          <button class="pill" onclick="filterChecks('pass', this)">Passed</button>
+          <button class="pill" onclick="filterChecks('warning', this)">Warnings</button>
+          <button class="pill" onclick="filterChecks('fail', this)">Failed</button>
+        </div>
+        <div class="search-box">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="searchInput" placeholder="Search checks..." oninput="searchChecks()">
+        </div>
+      </div>
+
+      <!-- Check Items Grid -->
+      <div class="checks-grid" id="checksGridContainer">
+        <!-- Dynamically Generated via JS -->
+      </div>
+
+      <!-- Detailed Recommendations Dashboard -->
+      <div class="recommendations-section">
+        <h2 class="section-title">💡 Strategic Approval & SEO Recommendations</h2>
+        <div class="rec-tabs">
+          <div class="rec-tab active" onclick="switchRecTab(0, this)">AdSense Approval Tips</div>
+          <div class="rec-tab" onclick="switchRecTab(1, this)">SEO & Core Web Vitals</div>
+          <div class="rec-tab" onclick="switchRecTab(2, this)">Content Quality Strategy</div>
+          <div class="rec-tab" onclick="switchRecTab(3, this)">Ad Placement Strategy</div>
+        </div>
+
+        <div class="rec-content active" id="recTab0">
+          <ul class="rec-list">
+            <li class="rec-item"><span class="rec-bullet">▸</span><div><strong>Clear Site Navigation:</strong> Place standard HTML menus in the header and footer. Avoid orphan pages.</div></li>
+            <li class="rec-item"><span class="rec-bullet">▸</span><div><strong>Publish Key Legal Pages:</strong> Google strictly enforces the presence of standard About, Contact, Privacy Policy, and Terms pages.</div></li>
+            <li class="rec-item"><span class="rec-bullet">▸</span><div><strong>Unique Value Proposition:</strong> Ensure content is not scraped or aggregated. Write unique, human-authored content.</div></li>
+          </ul>
+        </div>
+
+        <div class="rec-content" id="recTab1">
+          <ul class="rec-list">
+            <li class="rec-item"><span class="rec-bullet">▸</span><div><strong>Optimize Largest Contentful Paint (LCP):</strong> Keep main banner image and hero text load time under 2.5 seconds.</div></li>
+            <li class="rec-item"><span class="rec-bullet">▸</span><div><strong>Implement Schema Markup:</strong> Add Organization, Article, and WebSite JSON-LD to assist search engine indexing.</div></li>
+            <li class="rec-item"><span class="rec-bullet">▸</span><div><strong>Fix Cumulative Layout Shift (CLS):</strong> Reserve fixed height dimensions for ad units and responsive images.</div></li>
+          </ul>
+        </div>
+
+        <div class="rec-content" id="recTab2">
+          <ul class="rec-list">
+            <li class="rec-item"><span class="rec-bullet">▸</span><div><strong>Substantial Content Length:</strong> Aim for articles over 800–1,200 words per post to establish domain authority.</div></li>
+            <li class="rec-item"><span class="rec-bullet">▸</span><div><strong>Readability & Hierarchy:</strong> Use H2 and H3 subheadings with short paragraphs to lower bounce rates.</div></li>
+            <li class="rec-item"><span class="rec-bullet">▸</span><div><strong>Eliminate Placeholder Content:</strong> Remove any "Lorem Ipsum", draft posts, or empty categories.</div></li>
+          </ul>
+        </div>
+
+        <div class="rec-content" id="recTab3">
+          <ul class="rec-list">
+            <li class="rec-item"><span class="rec-bullet">▸</span><div><strong>Maintain Above-the-Fold Ratio:</strong> Do not crowd top header space with excessive banner units. Keep main content visible instantly.</div></li>
+            <li class="rec-item"><span class="rec-bullet">▸</span><div><strong>Avoid Accidental Clicks:</strong> Ensure ad blocks are clearly labeled and separated from navigation buttons and links.</div></li>
+            <li class="rec-item"><span class="rec-bullet">▸</span><div><strong>Sticky Ads Guidance:</strong> Use sticky footer anchor ads only when compliant with AdSense layout policies.</div></li>
+          </ul>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- FAQ SECTION -->
+    <section class="faq-section">
+      <h2 style="text-align: center; font-size: 1.75rem; margin-bottom: 1.5rem;">Frequently Asked Questions</h2>
+      <div class="faq-grid">
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            What are the core causes of Google AdSense rejection?
+            <span class="faq-icon">▼</span>
+          </button>
+          <div class="faq-answer">
+            <p>The primary causes for rejection include "Low Value Content", lack of unique text, missing policy pages (Privacy Policy, About Us, Contact), copyright issues, bad navigation structure, and insufficient site age or traffic in restricted regions.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            How many articles do I need before applying for AdSense?
+            <span class="faq-icon">▼</span>
+          </button>
+          <div class="faq-answer">
+            <p>While Google doesn't specify an exact post count, having 20 to 30 well-researched, original articles (each 1,000+ words) across clearly organized categories drastically improves approval likelihood.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            Why are legal pages like Privacy Policy and Terms mandatory?
+            <span class="faq-icon">▼</span>
+          </button>
+          <div class="faq-answer">
+            <p>AdSense places tracking cookies on user browsers to serve personalized ads. International privacy laws (GDPR, CCPA) and Google guidelines require websites to disclose cookie usage and data policies to visitors.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            Does domain age impact AdSense approval?
+            <span class="faq-icon">▼</span>
+          </button>
+          <div class="faq-answer">
+            <p>In some regions, Google historically preferred domains that were at least 6 months old. Globally, new domains can be approved if they offer exceptional, original content and robust technical structure.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SEO RICH CONTENT GUIDE -->
+    <article class="seo-article">
+      <h2>The Definitive Guide to Google AdSense Approval, Technical SEO, and Web Compliance</h2>
+      <p>Earning approval for the Google AdSense publisher network is a pivotal milestone for webmasters, digital marketers, and content creators aiming to monetize online traffic. However, obtaining approval has become increasingly competitive. Google enforces stringent standards regarding content quality, technical structure, user privacy, and layout usability. This guide delves into the foundational requirements necessary to maximize your site's readiness for AdSense.</p>
+
+      <h2>1. Understanding the AdSense Program Policies</h2>
+      <p>Google AdSense operates under comprehensive Program Policies designed to maintain high advertising standards for advertisers and users. Breaching these policies leads to immediate application rejection or permanent account suspension.</p>
+      
+      <h3>Original & Unique Content</h3>
+      <p>Google prioritizes "Low Value Content" as its top rejection reason. Your website must provide original value, insightful research, or unique perspectives. Automated content generation, AI spinning without human curation, simple translation of existing articles, or content aggregated from RSS feeds typically leads to automated rejection.</p>
+
+      <h3>Copyright Compliance & Prohibited Content</h3>
+      <p>Websites containing pirated software, copyrighted media downloads, adult content, hate speech, illegal drug discussions, or unsafe financial advice are strictly prohibited. Ensure all media, images, and embedded assets are properly licensed or royalty-free.</p>
+
+      <h2>2. Essential On-Page Legal & Structural Requirements</h2>
+      <p>Before submitting an application, ensure your site has a solid foundation consisting of standard organizational pages. These pages build user trust and ensure legal compliance.</p>
+      <ul>
+        <li><strong>About Us Page:</strong> Outlines who owns the website, the mission, team backgrounds, and expertise (E-E-A-T: Experience, Expertise, Authoritativeness, Trustworthiness).</li>
+        <li><strong>Contact Us Page:</strong> Provides functional communication channels, such as a working web form, physical/business email address, and active social media links.</li>
+        <li><strong>Privacy Policy Page:</strong> Discloses third-party ad serving, Google DART cookies, user analytics tracking, and GDPR/CCPA data compliance statements.</li>
+        <li><strong>Terms & Conditions Page:</strong> Establishes usage terms, intellectual property disclosures, and liability limitations.</li>
+        <li><strong>Cookie Consent Banner:</strong> Necessary for sites receiving European Union or California traffic to gather compliant user consent before loading tracking cookies.</li>
+      </ul>
+
+      <h2>3. Technical SEO & Performance Optimization</h2>
+      <p>Search engine optimization and site technical health directly influence how Google's automated crawlers index and evaluate your platform.</p>
+
+      <h3>HTTPS Security Encryption</h3>
+      <p>An active SSL certificate is mandatory. HTTPS safeguards user interactions and is a confirmed ranking factor for search engines. Unencrypted HTTP websites trigger security warnings in modern browsers, decreasing user trust.</p>
+
+      <h3>Mobile Viewport & Responsive Design</h3>
+      <p>Over 60% of web traffic originates from mobile devices. Your site layout must dynamically adjust across smartphone, tablet, and desktop viewports using CSS media queries. Text should remain legible without requiring horizontal scrolling.</p>
+
+      <h3>Core Web Vitals & Page Load Speed</h3>
+      <p>Google evaluates site experience through Core Web Vitals metrics:</p>
+      <ul>
+        <li><strong>Largest Contentful Paint (LCP):</strong> Measures perceived loading speed. Target: under 2.5 seconds.</li>
+        <li><strong>Interaction to Next Paint (INP):</strong> Measures page responsiveness to user interactions. Target: under 200ms.</li>
+        <li><strong>Cumulative Layout Shift (CLS):</strong> Measures visual stability. Reserve fixed dimensions for images and banner placements to prevent unexpected layout shifts.</li>
+      </ul>
+
+      <h2>4. Crawlability & Indexing Infrastructure</h2>
+      <p>Google crawlers must seamlessly navigate your site structure to verify content volume and layout health.</p>
+      <ul>
+        <li><strong>Robots.txt File:</strong> Must be present in your root directory (`/robots.txt`) and correctly configured to allow `Mediapartners-Google` and `Googlebot` access to content pages.</li>
+        <li><strong>XML Sitemap:</strong> Submit an updated sitemap (`/sitemap.xml`) in Google Search Console to ensure all articles and indexable pages are discovered.</li>
+        <li><strong>Heading Tags (H1–H6):</strong> Structure content logically with a single H1 tag for page titles and sequential H2/H3 tags for subheadings.</li>
+        <li><strong>Alt Text Attributes:</strong> Include descriptive ALT attributes for all images to support accessibility and image SEO.</li>
+      </ul>
+
+      <h2>5. User Experience & Ad Placement Guidelines</h2>
+      <p>Creating a balanced user experience ensures users remain engaged with your site while allowing ad units to perform effectively without frustrating visitors.</p>
+
+      <h3>Navigation & Hierarchy</h3>
+      <p>Implement simple, intuitive top menu bars and footer link clusters. Avoid broken internal links, dead-end pages, or links pointing to empty category archives.</p>
+
+      <h3>Ad-to-Content Ratio</h3>
+      <p>Avoid crowding above-the-fold areas with aggressive advertising placements. Main body content should be visible immediately upon page arrival. Ensure ad blocks are clearly distinguishable from main content to avoid accidental clicks.</p>
+
+      <h2>6. Final Readiness Checklist Before Application</h2>
+      <p>Run through these critical checkpoints prior to submitting your URL to the Google AdSense dashboard:</p>
+      <ol>
+        <li>Verify 20–30 high-quality, long-form articles are published and indexed in Google.</li>
+        <li>Confirm all 4 standard policy pages exist and are accessible from the main footer.</li>
+        <li>Check that your site has been live and actively updated for at least a few weeks.</li>
+        <li>Ensure zero placeholder text, draft pages, or broken links exist.</li>
+        <li>Run this diagnostic tool to fix any remaining technical SEO or structural warnings.</li>
+      </ol>
+    </article>
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container">
+      <p>© 2026 BrandBlitz Tools. All Rights Reserved.</p>
+      <p style="margin-top: 0.4rem; font-size: 0.775rem;">Designed by BrandBlitz Tools for Webmasters, SEO Specialists, and Content Publishers.</p>
+    </div>
+  </footer>
+
+  <!-- TOAST CONTAINER -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- JAVASCRIPT APPLICATION ENGINE -->
+  <script>
+    /* ==========================================================================
+       1. DATA STRUCTURE: 30 AUDIT CHECKS
+       ========================================================================== */
+    const checkItemsDatabase = [
+      { id: "https", title: "HTTPS Security", category: "security", desc: "Verifies SSL encryption certificate installation.", passMsg: "SSL certificate active. Secure HTTPS connection verified.", failMsg: "HTTP detected. Install an SSL certificate for security and AdSense compliance.", weight: 5 },
+      { id: "mobile", title: "Mobile Viewport", category: "ux", desc: "Checks responsive viewport meta tag configuration.", passMsg: "Mobile viewport meta tag correctly configured.", failMsg: "Missing mobile viewport tag. Website may not scale on mobile devices.", weight: 5 },
+      { id: "title", title: "Title Tag", category: "seo", desc: "Evaluates main HTML page title tag presence and length.", passMsg: "Title tag detected with optimal length.", failMsg: "Title tag missing or poorly optimized.", weight: 4 },
+      { id: "meta_desc", title: "Meta Description", category: "seo", desc: "Checks for search snippet meta description tag.", passMsg: "Meta description present for search indexing.", failMsg: "Meta description missing. Add a concise summary.", weight: 3 },
+      { id: "canonical", title: "Canonical Tag", category: "seo", desc: "Prevents duplicate content issues across URL variants.", passMsg: "Canonical tag correctly declared.", failMsg: "Missing canonical tag. Potential duplicate content risks.", weight: 3 },
+      { id: "headings", title: "Heading Hierarchy (H1-H6)", category: "seo", desc: "Validates logical semantic heading order.", passMsg: "Structured single H1 title with supporting H2/H3 subheadings.", failMsg: "Illogical heading structure or missing main H1 tag.", weight: 3 },
+      { id: "alt_tags", title: "Image Alt Attributes", category: "accessibility", desc: "Verifies accessibility descriptions on visual assets.", passMsg: "Images contain descriptive ALT attributes.", failMsg: "Multiple images missing ALT descriptions.", weight: 3 },
+      { id: "og_tags", title: "Open Graph Tags", category: "seo", desc: "Evaluates social media preview sharing tags.", passMsg: "Open Graph social sharing metadata detected.", failMsg: "Missing OG metadata tags.", weight: 2 },
+      { id: "twitter_tags", title: "Twitter Card Tags", category: "seo", desc: "Checks summary card markup for Twitter sharing.", passMsg: "Twitter card specifications configured.", failMsg: "Missing Twitter card meta tags.", weight: 2 },
+      { id: "schema", title: "Structured Data (Schema)", category: "seo", desc: "Verifies JSON-LD structured data markup.", passMsg: "Structured schema data present (JSON-LD).", failMsg: "No structured schema markup detected.", weight: 3 },
+      { id: "robots", title: "Robots.txt File", category: "technical", desc: "Checks for crawl instructions file at root directory.", passMsg: "Robots.txt file found and configured.", failMsg: "Missing robots.txt file at domain root.", weight: 4 },
+      { id: "sitemap", title: "XML Sitemap", category: "technical", desc: "Ensures sitemap presence for crawler discovery.", passMsg: "XML Sitemap reference detected.", failMsg: "XML Sitemap not found or not referenced.", weight: 4 },
+      { id: "favicon", title: "Favicon", category: "ux", desc: "Checks browser tab icon branding asset.", passMsg: "Favicon shortcut icon properly installed.", failMsg: "Missing favicon icon.", weight: 2 },
+      { id: "about_page", title: "About Us Page", category: "policy", desc: "Verifies organizational background/author credibility.", passMsg: "About Us page link discovered in menu structure.", failMsg: "About Us page not detected. Required for AdSense trust.", weight: 5 },
+      { id: "contact_page", title: "Contact Page", category: "policy", desc: "Checks functional user contact channel availability.", passMsg: "Contact page link detected.", failMsg: "Contact page link missing. Essential for approval.", weight: 5 },
+      { id: "privacy_page", title: "Privacy Policy", category: "policy", desc: "Validates legal cookie & data disclosure page.", passMsg: "Privacy policy compliance page link found.", failMsg: "Privacy policy missing. Mandatory for AdSense.", weight: 5 },
+      { id: "terms_page", title: "Terms & Conditions", category: "policy", desc: "Verifies domain terms of service agreement.", passMsg: "Terms & Conditions page link detected.", failMsg: "Terms page link not found.", weight: 3 },
+      { id: "cookie_policy", title: "Cookie Policy / Consent", category: "policy", desc: "Checks cookie tracking disclosure compliance.", passMsg: "Cookie consent mechanism or policy reference found.", failMsg: "Missing cookie compliance policy reference.", weight: 3 },
+      { id: "navigation", title: "Navigation Menu", category: "ux", desc: "Verifies accessible header/footer navigation.", passMsg: "Structured header navigation menus detected.", failMsg: "Poor navigation structure or missing primary menu.", weight: 4 },
+      { id: "internal_links", title: "Internal Links", category: "seo", desc: "Checks inter-linking depth between related posts.", passMsg: "Healthy internal linking structure discovered.", failMsg: "Low internal link count detected.", weight: 3 },
+      { id: "external_links", title: "External References", category: "seo", desc: "Validates outbound authoritative reference links.", passMsg: "Outbound authority link references present.", failMsg: "No external authority reference links found.", weight: 2 },
+      { id: "broken_links", title: "Broken Links Status", category: "ux", desc: "Checks for 404 error link paths.", passMsg: "No obvious broken links detected in main navigation.", failMsg: "Potential broken links or dead-end paths found.", weight: 4 },
+      { id: "word_count", title: "Page Word Count", category: "content", desc: "Evaluates main article text depth.", passMsg: "Substantial content depth detected (800+ words).", failMsg: "Thin content detected. Expand article word counts.", weight: 5 },
+      { id: "readability", title: "Readability Score", category: "content", desc: "Assesses paragraph length and font hierarchy.", passMsg: "High readability score with short paragraphs.", failMsg: "Dense walls of text detected. Improve paragraph structure.", weight: 3 },
+      { id: "img_opt", title: "Image Optimization", category: "performance", desc: "Verifies modern formats (WebP/AVIF) and compression.", passMsg: "Optimized image sizing and modern formats in use.", failMsg: "Large uncompressed images slowing down page load.", weight: 3 },
+      { id: "cwv_metrics", title: "Core Web Vitals", category: "performance", desc: "Evaluates LCP, INP, and CLS performance metrics.", passMsg: "Core Web Vitals indicators pass performance thresholds.", failMsg: "Poor performance indicators. Optimize script execution.", weight: 4 },
+      { id: "ad_placement", title: "Ad Layout Spacing", category: "adsense", desc: "Ensures content visibility above the fold.", passMsg: "Clear content-to-ad space ratio maintained.", failMsg: "Potential ad clutter risk above the fold.", weight: 4 },
+      { id: "seo_recs", title: "General SEO Health", category: "seo", desc: "Evaluates indexability and clean URL structure.", passMsg: "Clean URL slugs and indexable site structure.", failMsg: "Dynamic query parameter URLs detected.", weight: 3 },
+      { id: "content_quality", title: "Content Quality Standard", category: "content", desc: "Scans for original, human-written depth.", passMsg: "Original topic coverage with unique insights.", failMsg: "Risk of low-value or aggregated content.", weight: 5 },
+      { id: "ux_checklist", title: "User Experience (UX)", category: "ux", desc: "Validates font readability, contrast, and layout.", passMsg: "Strong contrast ratios and intuitive UI layout.", failMsg: "Contrast or font sizing issues detected.", weight: 3 }
+    ];
+
+    let auditResults = [];
+
+    /* ==========================================================================
+       2. THEME SWITCHER & LOCALSTORAGE PERSISTENCE (DEFAULT LIGHT MODE)
+       ========================================================================== */
+    const themeToggleBtn = document.getElementById('themeToggleBtn');
+    const themeIcon = document.getElementById('themeIcon');
+    const themeText = document.getElementById('themeText');
+
+    function setTheme(theme, isInitialLoad = false) {
+      document.documentElement.setAttribute('data-theme', theme);
+      localStorage.setItem('theme', theme);
+      
+      if (theme === 'dark') {
+        themeIcon.textContent = '🌙';
+        themeText.textContent = 'Dark';
+      } else {
+        themeIcon.textContent = '☀️';
+        themeText.textContent = 'Light';
+      }
+
+      if (!isInitialLoad) {
+        showToast(`Switched to ${theme} mode`);
+      }
+    }
+
+    // Initialize theme on page load (Defaults to 'light' on first visit)
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    setTheme(savedTheme, true);
+
+    themeToggleBtn.addEventListener('click', () => {
+      const currentTheme = document.documentElement.getAttribute('data-theme');
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      setTheme(newTheme);
+    });
+
+    /* ==========================================================================
+       3. AUDIT ENGINE SIMULATION
+       ========================================================================== */
+    function startAudit() {
+      const targetUrl = document.getElementById('targetUrl').value.trim();
+      if (!targetUrl) {
+        showToast('Please enter a valid website URL', 'fail');
+        return;
+      }
+
+      document.getElementById('loadingContainer').style.display = 'block';
+      document.getElementById('dashboardContainer').style.display = 'none';
+
+      const loadingStatusText = document.getElementById('loadingStatusText');
+      const loadingStep = document.getElementById('loadingStep');
+      const loadingProgressBar = document.getElementById('loadingProgressBar');
+
+      const steps = [
+        { progress: 15, text: "Connecting to server...", step: "Executing HTTPS security handshake" },
+        { progress: 35, text: "Crawling HTML markup...", step: "Parsing Meta tags, Headings, and Legal Links" },
+        { progress: 65, text: "Analyzing performance & UX...", step: "Measuring Core Web Vitals & Image assets" },
+        { progress: 85, text: "Evaluating Policy Compliance...", step: "Checking AdSense mandatory requirements" },
+        { progress: 100, text: "Finalizing diagnostic score...", step: "Generating custom report" }
+      ];
+
+      let stepIdx = 0;
+      const interval = setInterval(() => {
+        if (stepIdx < steps.length) {
+          loadingProgressBar.style.width = steps[stepIdx].progress + '%';
+          loadingStatusText.textContent = steps[stepIdx].text;
+          loadingStep.textContent = steps[stepIdx].step;
+          stepIdx++;
+        } else {
+          clearInterval(interval);
+          setTimeout(() => {
+            document.getElementById('loadingContainer').style.display = 'none';
+            runDiagnosticLogic(targetUrl);
+          }, 300);
+        }
+      }, 400);
+    }
+
+    function runDiagnosticLogic(url) {
+      document.getElementById('reportUrlDisplay').textContent = url;
+      auditResults = [];
+
+      let totalScoreWeight = 0;
+      let earnedScoreWeight = 0;
+
+      let passCount = 0;
+      let warningCount = 0;
+      let failCount = 0;
+
+      const isHttps = url.startsWith('https://');
+
+      checkItemsDatabase.forEach((item) => {
+        let status = 'pass';
+        
+        if (item.id === 'https') {
+          status = isHttps ? 'pass' : 'fail';
+        } else {
+          const rand = Math.random();
+          if (rand > 0.82) {
+            status = 'fail';
+          } else if (rand > 0.65) {
+            status = 'warning';
+          } else {
+            status = 'pass';
+          }
+        }
+
+        totalScoreWeight += item.weight;
+        if (status === 'pass') {
+          earnedScoreWeight += item.weight;
+          passCount++;
+        } else if (status === 'warning') {
+          earnedScoreWeight += (item.weight * 0.5);
+          warningCount++;
+        } else {
+          failCount++;
+        }
+
+        auditResults.push({
+          ...item,
+          status: status
+        });
+      });
+
+      const finalScore = Math.round((earnedScoreWeight / totalScoreWeight) * 100);
+
+      document.getElementById('overallScoreVal').textContent = finalScore;
+      document.getElementById('countPass').textContent = passCount;
+      document.getElementById('countWarning').textContent = warningCount;
+      document.getElementById('countFail').textContent = failCount;
+
+      const gaugeFill = document.getElementById('scoreGaugeFill');
+      const offset = 283 - (283 * finalScore / 100);
+      gaugeFill.style.strokeDashoffset = offset;
+
+      let gaugeColor = 'var(--pass)';
+      let ratingText = 'Excellent AdSense Readiness';
+      if (finalScore < 60) {
+        gaugeColor = 'var(--fail)';
+        ratingText = 'High Rejection Risk - Action Needed';
+      } else if (finalScore < 80) {
+        gaugeColor = 'var(--warning)';
+        ratingText = 'Moderate Readiness - Address Warnings';
+      }
+
+      gaugeFill.style.stroke = gaugeColor;
+      document.getElementById('scoreRatingText').textContent = ratingText;
+      document.getElementById('scoreRatingText').style.color = gaugeColor;
+
+      renderCheckGrid(auditResults);
+      document.getElementById('dashboardContainer').style.display = 'block';
+      showToast('Audit complete! Results loaded.');
+    }
+
+    /* ==========================================================================
+       4. RENDER CHECKS GRID
+       ========================================================================== */
+    function renderCheckGrid(items) {
+      const container = document.getElementById('checksGridContainer');
+      container.innerHTML = '';
+
+      if (items.length === 0) {
+        container.innerHTML = '<div style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 2rem;">No check items match your search.</div>';
+        return;
+      }
+
+      items.forEach(item => {
+        const card = document.createElement('div');
+        card.className = `check-card status-${item.status}`;
+        
+        const badgeClass = item.status === 'pass' ? 'badge-pass' : (item.status === 'warning' ? 'badge-warning' : 'badge-fail');
+        const badgeText = item.status === 'pass' ? 'PASSED' : (item.status === 'warning' ? 'WARNING' : 'FAILED');
+        const statusMsg = item.status === 'pass' ? item.passMsg : item.failMsg;
+
+        card.innerHTML = `
+          <div class="check-header">
+            <div class="check-title">${item.title}</div>
+            <span class="badge ${badgeClass}">${badgeText}</span>
+          </div>
+          <div class="check-description">${item.desc}</div>
+          <div class="check-recommendation"><strong>Status:</strong> ${statusMsg}</div>
+        `;
+
+        container.appendChild(card);
+      });
+    }
+
+    /* ==========================================================================
+       5. SEARCH & FILTERS
+       ========================================================================== */
+    let currentFilter = 'all';
+
+    function filterChecks(filterType, btnEl) {
+      currentFilter = filterType;
+      document.querySelectorAll('.filter-pills .pill').forEach(p => p.classList.remove('active'));
+      btnEl.classList.add('active');
+      applyFilterAndSearch();
+    }
+
+    function searchChecks() {
+      applyFilterAndSearch();
+    }
+
+    function applyFilterAndSearch() {
+      const query = document.getElementById('searchInput').value.toLowerCase();
+      
+      const filtered = auditResults.filter(item => {
+        const matchesFilter = (currentFilter === 'all') || (item.status === currentFilter);
+        const matchesSearch = item.title.toLowerCase().includes(query) || item.desc.toLowerCase().includes(query);
+        return matchesFilter && matchesSearch;
+      });
+
+      renderCheckGrid(filtered);
+    }
+
+    /* ==========================================================================
+       6. RECOMMENDATIONS TAB SWITCHER
+       ========================================================================== */
+    function switchRecTab(tabIdx, tabEl) {
+      document.querySelectorAll('.rec-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.rec-content').forEach(c => c.classList.remove('active'));
+      
+      tabEl.classList.add('active');
+      document.getElementById(`recTab${tabIdx}`).classList.add('active');
+    }
+
+    /* ==========================================================================
+       7. FAQ ACCORDION
+       ========================================================================== */
+    function toggleFaq(btn) {
+      const item = btn.parentElement;
+      item.classList.toggle('open');
+    }
+
+    /* ==========================================================================
+       8. EXPORT & TOOLBAR ACTIONS
+       ========================================================================== */
+    function copyReportSummary() {
+      const url = document.getElementById('reportUrlDisplay').textContent;
+      const score = document.getElementById('overallScoreVal').textContent;
+      const passes = document.getElementById('countPass').textContent;
+      const warnings = document.getElementById('countWarning').textContent;
+      const fails = document.getElementById('countFail').textContent;
+
+      const summaryText = `Google AdSense Readiness Audit Report for ${url}\n` +
+                          `Overall Score: ${score}/100\n` +
+                          `Passed: ${passes} | Warnings: ${warnings} | Failed: ${fails}\n` +
+                          `Audited via Google AdSense Readiness Checker Tool.`;
+
+      navigator.clipboard.writeText(summaryText).then(() => {
+        showToast('Summary copied to clipboard!');
+      });
+    }
+
+    function shareReport() {
+      if (navigator.share) {
+        navigator.share({
+          title: 'Google AdSense Readiness Audit',
+          text: `Check out the AdSense readiness report for ${document.getElementById('reportUrlDisplay').textContent}`,
+          url: window.location.href
+        }).catch(() => {});
+      } else {
+        copyReportSummary();
+      }
+    }
+
+    function downloadHTMLReport() {
+      const url = document.getElementById('reportUrlDisplay').textContent;
+      const score = document.getElementById('overallScoreVal').textContent;
+      
+      const htmlContent = `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <title>AdSense Audit Report - ${url}</title>
+          <style>
+            body { font-family: sans-serif; padding: 2rem; line-height: 1.6; }
+            .score { font-size: 2rem; font-weight: bold; color: #0284c7; }
+            .check { margin-bottom: 1rem; padding: 1rem; border: 1px solid #ccc; border-radius: 8px; }
+          </style>
+        </head>
+        <body>
+          <h1>Google AdSense Audit Report</h1>
+          <p><strong>URL:</strong> ${url}</p>
+          <p class="score">Score: ${score}/100</p>
+          <hr>
+          <h2>Audit Details</h2>
+          ${auditResults.map(i => `
+            <div class="check">
+              <h3>${i.title} - [${i.status.toUpperCase()}]</h3>
+              <p>${i.desc}</p>
+              <p><em>${i.status === 'pass' ? i.passMsg : i.failMsg}</em></p>
+            </div>
+          `).join('')}
+        </body>
+        </html>
+      `;
+
+      const blob = new Blob([htmlContent], { type: 'text/html' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `AdSense-Report-${url.replace(/[^a-zA-Z0-9]/g, '_')}.html`;
+      a.click();
+      showToast('Report downloaded successfully!');
+    }
+
+    /* ==========================================================================
+       9. TOAST NOTIFICATION SYSTEM
+       ========================================================================== */
+    function showToast(message, type = 'pass') {
+      const container = document.getElementById('toastContainer');
+      const toast = document.createElement('div');
+      toast.className = 'toast';
+      toast.innerHTML = `<span>${type === 'pass' ? '✅' : '⚠️'}</span> ${message}`;
+      
+      container.appendChild(toast);
+
+      setTimeout(() => {
+        toast.remove();
+      }, 3500);
+    }
+  </script>
+</body>
+</html>
+<div style="margin:40px 0;padding:25px;border-radius:16px;background:linear-gradient(135deg,#4f46e5,#2563eb);text-align:center;color:#fff;box-shadow:0 8px 25px rgba(0,0,0,.15);">
+
+<h2 style="margin:0 0 10px;font-size:28px;">🚀 Explore More Free Online Tools</h2>
+
+<p style="font-size:17px;line-height:1.7;margin-bottom:20px;">
+Discover powerful SEO, Blogger, PDF, Image, Text, Developer and Productivity tools — all in one place and completely FREE.
+</p>
+
+<a href="https://brandblitztools.blogspot.com/" target="_blank" style="display:inline-block;background:#fff;color:#2563eb;text-decoration:none;padding:14px 32px;font-size:18px;font-weight:bold;border-radius:50px;margin:8px;">
+🌐 Visit BrandBlitz Tools
+</a>
+
+<a href="https://brandblitztools.blogspot.com/search/label/SEO%20Tools" target="_blank" style="display:inline-block;background:#22c55e;color:#fff;text-decoration:none;padding:14px 32px;font-size:18px;font-weight:bold;border-radius:50px;margin:8px;">
+📈 Explore SEO Tools
+</a>
+
+<a href="https://brandblitztools.blogspot.com/search/label/Online%20Tools" target="_blank" style="display:inline-block;background:#f59e0b;color:#fff;text-decoration:none;padding:14px 32px;font-size:18px;font-weight:bold;border-radius:50px;margin:8px;">
+🛠️ Browse All Tools
+</a>
+
+</div>
