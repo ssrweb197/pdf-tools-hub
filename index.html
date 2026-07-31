@@ -1,0 +1,595 @@
+<!doctype html>
+<html lang="en"><head><script>window["__codeletBootstrap__"]=JSON.parse('{"A":"A","B":"20260723-05-e9a76f4"}');</script><script src="/_sdk/e358eac22bd01364.telemetry_sdk.js" integrity="sha512-KPxp3rw4K8Nu9ceWJc3gyM7srgaZxiFWOVbyu260EYzzAqdz10mfo5xyXrCx+wEKtGo77JbtmwXvFLbwrGzwvw=="></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="BrandBlitz Tools provides free browser-based PDF, image, text, calculator, SEO, password, and QR utilities.">
+  <meta name="keywords" content="PDF tools, image compressor, Word counter, EMI calculator, GST calculator, QR generator, SEO tools">
+  <meta name="robots" content="index,follow">
+  <meta name="theme-color" content="#1769e0">
+  <title>BrandBlitz Tools — Free Online PDF, Image, SEO and Calculator Tools</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mammoth@1.8.0/mammoth.browser.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.4/build/qrcode.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&amp;family=Fraunces:opsz,wght@9..144,700&amp;display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --brand:#1769e0; --brand2:#25a8ef; --ink:#10213d; --muted:#61718a;
+      --line:#dce7f5; --surface:#fff; --soft:#f4f8ff; --glass:rgba(255,255,255,.82);
+      --danger:#c53b4a; --success:#08785f; --shadow:0 20px 60px rgba(25,71,130,.12);
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;width:100%;min-height:100%;font-family:"DM Sans",sans-serif;color:var(--ink);background:var(--soft)}
+    body.dark{
+      --ink:#eaf2ff;--muted:#9fb0c8;--line:#263b58;--surface:#101d31;--soft:#07111f;
+      --glass:rgba(12,27,48,.84);--shadow:0 20px 60px rgba(0,0,0,.28)
+    }
+    button,input,textarea,select{font:inherit}
+    button,a{-webkit-tap-highlight-color:transparent}
+    button:disabled{cursor:not-allowed;opacity:.55}
+    .app-shell{width:100%;min-height:100%;background:
+      radial-gradient(circle at 90% 4%,rgba(39,145,244,.18),transparent 27rem),
+      radial-gradient(circle at 5% 35%,rgba(45,212,191,.10),transparent 23rem)}
+    .site-width{width:min(1180px,calc(100% - 40px));margin-inline:auto}
+    .glass{background:var(--glass);border:1px solid var(--line);backdrop-filter:blur(18px);box-shadow:var(--shadow)}
+    .site-header{position:sticky;top:0;z-index:50;border-bottom:1px solid var(--line);background:var(--glass);backdrop-filter:blur(20px)}
+    .brand-mark{display:grid;place-items:center;width:42px;height:42px;border-radius:14px;color:#fff;background:linear-gradient(135deg,var(--brand),var(--brand2));box-shadow:0 10px 25px rgba(23,105,224,.28)}
+    .nav-link{color:var(--muted);font-weight:700;transition:.2s}
+    .nav-link:hover{color:var(--brand)}
+    .hero{padding:80px 0 72px;background:linear-gradient(135deg,rgba(249,252,255,.83),rgba(232,244,255,.72))}
+    body.dark .hero{background:linear-gradient(135deg,rgba(10,24,43,.88),rgba(11,43,74,.72))}
+    .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:68px;align-items:center}
+    .hero-title{font-family:"Fraunces",serif;letter-spacing:-.055em;line-height:1}
+    .gradient-text{background:linear-gradient(110deg,#0b57c9,#1eaae9);-webkit-background-clip:text;background-clip:text;color:transparent}
+    .hero-visual{position:relative;min-height:470px}
+    .hero-visual:before{content:"";position:absolute;inset:4% 0 5% 4%;border-radius:48% 52% 45% 55%;background:linear-gradient(145deg,#d9eaff,#e7f7ff 55%,#d8fbf4);transform:rotate(-4deg)}
+    body.dark .hero-visual:before{background:linear-gradient(145deg,#16375f,#123f61,#124d54)}
+    .hero-image{position:absolute;inset:35px 20px 42px 35px;width:calc(100% - 55px);height:calc(100% - 77px);object-fit:cover;border:8px solid rgba(255,255,255,.78);border-radius:32px;box-shadow:0 30px 65px rgba(13,54,105,.25)}
+    .float-chip{position:absolute;display:flex;align-items:center;gap:10px;padding:13px 16px;border-radius:17px;background:var(--glass);border:1px solid var(--line);box-shadow:var(--shadow);backdrop-filter:blur(14px);font-weight:800;animation:float 5s ease-in-out infinite}
+    .chip-a{left:0;top:25px}.chip-b{right:0;top:46%;animation-delay:-1.5s}.chip-c{left:12%;bottom:5px;animation-delay:-3s}
+    @keyframes float{50%{transform:translateY(-9px)}}
+    .section{padding:78px 0}.section-soft{background:rgba(238,246,255,.58);border-block:1px solid var(--line)}
+    body.dark .section-soft{background:rgba(11,29,51,.65)}
+    .section-title{letter-spacing:-.04em;line-height:1.08}
+    .search-box{display:flex;align-items:center;gap:10px;padding:8px;border:1px solid var(--line);border-radius:19px;background:var(--surface);box-shadow:var(--shadow)}
+    .field,.textarea,.select{width:100%;border:1px solid var(--line);border-radius:13px;background:var(--surface);color:var(--ink);padding:13px 14px;outline:none;transition:.2s}
+    .textarea{min-height:170px;resize:vertical}
+    .field:focus,.textarea:focus,.select:focus{border-color:#6eacf5;box-shadow:0 0 0 4px rgba(23,105,224,.11)}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:46px;border-radius:13px;padding:11px 18px;font-weight:800;transition:transform .2s,box-shadow .2s;border:1px solid transparent}
+    .btn:hover:not(:disabled){transform:translateY(-2px)}
+    .btn-primary{background:var(--brand);color:#fff;box-shadow:0 10px 24px rgba(23,105,224,.22)}
+    .btn-secondary{background:var(--surface);color:var(--brand);border-color:var(--line)}
+    .btn-danger{background:#fff0f1;color:var(--danger);border-color:#ffd2d8}
+    .category-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:15px}
+    .tool-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+    .category-card,.tool-card{border:1px solid var(--line);background:var(--glass);border-radius:22px;box-shadow:0 8px 28px rgba(28,68,118,.07);transition:.22s;text-align:left;color:var(--ink)}
+    .category-card{padding:20px}.tool-card{padding:22px;min-height:205px;display:flex;flex-direction:column}
+    .category-card:hover,.tool-card:hover{transform:translateY(-5px);border-color:#9bc7fa;box-shadow:var(--shadow)}
+    .icon-tile{display:grid;place-items:center;width:48px;height:48px;border-radius:15px;color:#fff;box-shadow:0 8px 20px rgba(30,80,145,.18)}
+    .g-blue{background:linear-gradient(135deg,#1769e0,#32acf1)}.g-red{background:linear-gradient(135deg,#d94a50,#fa826c)}
+    .g-cyan{background:linear-gradient(135deg,#068cae,#38d2d9)}.g-orange{background:linear-gradient(135deg,#e76d29,#f7b33e)}
+    .g-teal{background:linear-gradient(135deg,#078b7c,#36caa4)}.g-violet{background:linear-gradient(135deg,#6251d4,#9d72e8)}
+    .tag{display:inline-flex;padding:5px 10px;border-radius:999px;background:#eaf3ff;color:#1769e0;font-size:12px;font-weight:800}
+    body.dark .tag{background:#173456;color:#91c5ff}
+    .tool-view{padding:52px 0 80px;min-height:700px}
+    .workspace{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:24px;align-items:start}
+    .tool-panel{padding:28px;border-radius:26px}
+    .side-panel{padding:22px;border-radius:22px;position:sticky;top:100px}
+    .form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+    .control{display:grid;gap:7px}.control label{font-weight:700;font-size:14px}
+    .dropzone{display:grid;place-items:center;text-align:center;min-height:180px;padding:24px;border:2px dashed #9fc2ed;border-radius:20px;background:rgba(235,245,255,.52);transition:.2s}
+    body.dark .dropzone{background:rgba(17,49,82,.5)}
+    .dropzone.drag{border-color:var(--brand);background:rgba(23,105,224,.1)}
+    .result{margin-top:20px;padding:18px;border:1px solid var(--line);border-radius:17px;background:var(--soft)}
+    .result-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+    .metric{padding:15px;border-radius:15px;background:var(--surface);border:1px solid var(--line)}
+    .metric strong{display:block;font-size:22px;color:var(--brand)}
+    .status-error{color:var(--danger)}.status-success{color:var(--success)}
+    .faq-item{border-bottom:1px solid var(--line)}.faq-answer{display:none;padding:0 20px 20px;color:var(--muted)}.faq-item.open .faq-answer{display:block}
+    .faq-item.open .faq-chevron{transform:rotate(180deg)}
+    .legal-card{max-width:820px;margin:auto;padding:32px;border-radius:26px}.legal-card p,.legal-card li{color:var(--muted);line-height:1.75}
+    .footer-link{color:#91a3bc}.footer-link:hover{color:#fff}
+    .hidden{display:none!important}
+    .fade{animation:reveal .45s both}@keyframes reveal{from{opacity:0;transform:translateY(12px)}}
+    .toast{position:fixed;left:50%;bottom:24px;z-index:80;transform:translateX(-50%);padding:12px 18px;border-radius:999px;background:#07111f;color:#fff;font-weight:800;box-shadow:0 20px 45px rgba(0,0,0,.3)}
+    .loading{position:fixed;inset:0;z-index:90;display:grid;place-items:center;background:rgba(3,13,25,.55);backdrop-filter:blur(5px)}
+    .spinner{width:48px;height:48px;border:5px solid #cde3ff;border-top-color:#1769e0;border-radius:50%;animation:spin .8s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
+    :focus-visible{outline:3px solid rgba(42,137,244,.55);outline-offset:3px}
+    @media(max-width:1024px){.hero-grid{grid-template-columns:1fr}.hero-visual{max-width:700px;width:100%;margin:auto}.category-grid{grid-template-columns:repeat(3,1fr)}.tool-grid{grid-template-columns:repeat(2,1fr)}.workspace{grid-template-columns:1fr}.side-panel{position:static}}
+    @media(max-width:680px){.site-width{width:min(100% - 28px,1180px)}.hero{padding:52px 0}.hero-visual{min-height:340px}.hero-image{inset:25px 10px 35px 22px;width:calc(100% - 32px);height:calc(100% - 60px)}.float-chip{padding:9px 11px;font-size:12px}.section{padding:58px 0}.category-grid,.tool-grid,.form-grid,.result-grid{grid-template-columns:1fr}.tool-card{min-height:auto}.search-box{flex-wrap:wrap}.search-box .btn{width:100%}.tool-panel{padding:20px}}
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+  </style>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebApplication","name":"BrandBlitz Tools","applicationCategory":"UtilitiesApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"INR"}}
+  </script>
+  <script src="/_sdk/935a53bc2e11fb8d.data_sdk.js" type="text/javascript" integrity="sha512-qr2oyPnEys1WebcOABaRh6hG77r5PWpqeWW6JTKbRJqly/INsfBi31CVNlTmHqjgeLpkVmmHZJUdxSx/32tOFQ=="></script>
+  <script src="/_sdk/6030e540d4419216.resizing_sdk.js" type="text/javascript" integrity="sha512-b5KWzyoXsbWP4smq4sftIi6Kts4YVBpBsz0BwCViwbBJkK64a3/Z6ZMdWA+qnplNcXw4mhZeqvQi3mOosiRJdA=="></script>
+ </head>
+ <body data-template-id="__page-root" style="background: rgb(244, 248, 255);">
+  <div class="app-shell">
+   <header data-template-id="site-header" class="canva-header site-header" style="background: rgba(255, 255, 255, 0.92);">
+    <nav class="site-width flex min-h-[76px] items-center justify-between gap-4" aria-label="Main navigation"><a href="#home" class="flex items-center gap-3 rounded-xl" aria-label="BrandBlitz Tools home"> <span class="brand-mark"><i data-lucide="zap"></i></span> <span data-template-id="brand-name" class="canva-text font-extrabold" style="color: rgb(16, 33, 61); font-weight: 800; font-style: normal; font-size: 20px;">BrandBlitz Tools</span> </a>
+     <div class="hidden items-center gap-7 lg:flex"><a data-template-id="nav-categories" class="canva-link nav-link" href="#home/categories" style="color: rgb(82, 98, 123); font-weight: 700; font-style: normal; font-size: 16px;">Categories</a> <a data-template-id="nav-popular" class="canva-link nav-link" href="#home/popular" style="color: rgb(82, 98, 123); font-weight: 700; font-style: normal; font-size: 16px;">Popular Tools</a> <a data-template-id="nav-new" class="canva-link nav-link" href="#home/new" style="color: rgb(82, 98, 123); font-weight: 700; font-style: normal; font-size: 16px;">New Tools</a> <a data-template-id="nav-faq" class="canva-link nav-link" href="#home/faq" style="color: rgb(82, 98, 123); font-weight: 700; font-style: normal; font-size: 16px;">FAQ</a>
+     </div>
+     <div class="flex items-center gap-2"><button id="theme-toggle" class="btn btn-secondary !px-3" type="button" aria-label="Enable dark mode" aria-pressed="false"> <i data-lucide="moon" class="theme-moon"></i><i data-lucide="sun" class="theme-sun hidden"></i> </button> <button id="all-tools-button" data-template-id="header-cta" class="canva-button btn btn-primary hidden sm:inline-flex" type="button" style="background: rgb(23, 105, 224); color: rgb(255, 255, 255); font-weight: 700; font-style: normal; font-size: 16px;">Explore Tools</button> <button id="mobile-toggle" class="btn btn-secondary !px-3 lg:hidden" type="button" aria-label="Open menu" aria-expanded="false"><i data-lucide="menu"></i></button>
+     </div>
+    </nav>
+    <div id="mobile-menu" class="site-width hidden border-t py-4 lg:hidden" style="border-color:var(--line)">
+     <div class="grid gap-2"><a class="nav-link p-3" href="#home/categories">Categories</a> <a class="nav-link p-3" href="#home/popular">Popular Tools</a> <a class="nav-link p-3" href="#home/new">New Tools</a> <a class="nav-link p-3" href="#home/faq">FAQ</a>
+     </div>
+    </div>
+   </header>
+   <main id="main-content">
+    <div id="home-view">
+     <section data-template-id="hero-section" class="canva-section hero" style="background: linear-gradient(135deg, rgb(249, 252, 255), rgb(232, 244, 255));">
+      <div class="site-width hero-grid">
+       <div class="fade"><span data-template-id="hero-eyebrow" class="canva-tag tag mb-6" style="background: rgb(237, 245, 255); color: rgb(18, 97, 201); font-weight: 700; font-style: normal; font-size: 14px;">22 tools. One focused workspace.</span>
+        <h1 data-template-id="hero-heading" class="canva-text hero-title mb-6 font-bold" style="color: rgb(16, 33, 61); font-weight: 700; font-style: normal; font-size: 64px; line-height: 1;">Free Online Tools for Faster Digital Work</h1>
+        <p data-template-id="hero-subtitle" class="canva-text mb-8 max-w-2xl leading-relaxed" style="color: rgb(92, 109, 134); font-weight: 400; font-style: normal; font-size: 19px; line-height: 1.6;">Convert PDFs, optimize images, analyze text, calculate finances, improve SEO, and create secure digital assets—all inside your browser.</p>
+        <form id="search-form" class="search-box mb-4" role="search"><label data-template-id="search-label" for="tool-search" class="canva-text sr-only" style="color: rgb(16, 33, 61); font-weight: 400; font-style: normal; font-size: 16px;">Search BrandBlitz tools</label> <i data-lucide="search" class="ml-3 text-blue-500"></i> <input id="tool-search" data-template-id="search-input" class="canva-input min-w-0 flex-1 bg-transparent px-2 py-3 outline-none" type="search" autocomplete="off" placeholder="Search PDF, image, text, calculator, SEO…" style="color: rgb(16, 33, 61); font-weight: 400; font-style: normal; font-size: 16px;"> <button data-template-id="search-button" class="canva-button btn btn-primary" type="submit" style="background: rgb(23, 105, 224); color: rgb(255, 255, 255); font-weight: 700; font-style: normal; font-size: 16px;">Search</button>
+        </form>
+        <p id="search-status" class="mb-6 min-h-6 text-sm font-bold text-blue-600" aria-live="polite"></p>
+        <div class="flex flex-wrap gap-3"><button data-template-id="primary-cta" id="browse-button" class="canva-button btn btn-primary" type="button" style="background: rgb(23, 105, 224); color: rgb(255, 255, 255); font-weight: 700; font-style: normal; font-size: 16px;">Browse Popular Tools</button> <button data-template-id="secondary-cta" id="category-button" class="canva-button btn btn-secondary" type="button" style="background: rgb(255, 255, 255); color: rgb(22, 79, 159); font-weight: 700; font-style: normal; font-size: 16px;">Explore Categories</button>
+        </div>
+        <div class="mt-7 flex flex-wrap gap-5 text-sm font-bold" style="color:var(--muted)"><span>✓ Local processing</span><span>✓ No sign-up</span><span>✓ Mobile ready</span>
+        </div>
+       </div>
+       <div class="hero-visual fade" aria-label="Digital productivity workspace"><img data-template-id="hero-image" class="canva-image hero-image" loading="lazy" src="https://images.pexels.com/photos/28729706/pexels-photo-28729706.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=1280" alt="Modern workspace featuring a stylus tablet, smartphone, and computer mouse under colorful lighting."> <span class="float-chip chip-a"><i data-lucide="file-output" class="text-blue-600"></i> Convert files</span> <span class="float-chip chip-b"><i data-lucide="shield-check" class="text-emerald-600"></i> Private by design</span> <span class="float-chip chip-c"><i data-lucide="sparkles" class="text-violet-600"></i> 22 useful tools</span>
+       </div>
+      </div>
+     </section>
+     <section id="categories" class="section">
+      <div class="site-width">
+       <p data-template-id="categories-eyebrow" class="canva-text mb-3 font-extrabold uppercase tracking-[.18em]" style="color: rgb(23, 105, 224); font-weight: 800; font-style: normal; font-size: 13px;">Explore by category</p>
+       <h2 data-template-id="categories-title" class="canva-text section-title mb-3 font-extrabold" style="color: rgb(16, 33, 61); font-weight: 800; font-style: normal; font-size: 40px;">Everything you need, neatly organized</h2>
+       <p data-template-id="categories-copy" class="canva-text mb-9 max-w-2xl" style="color: rgb(100, 116, 139); font-weight: 400; font-style: normal; font-size: 17px;">Choose a focused collection and open the exact utility you need.</p>
+       <div id="category-grid" class="category-grid"></div>
+      </div>
+     </section>
+     <section id="popular" data-template-id="popular-section" class="canva-section section section-soft" style="background: linear-gradient(rgb(239, 247, 255), rgb(250, 252, 255));">
+      <div class="site-width">
+       <div class="mb-9 text-center">
+        <p data-template-id="popular-eyebrow" class="canva-text mb-3 font-extrabold uppercase tracking-[.18em]" style="color: rgb(23, 105, 224); font-weight: 800; font-style: normal; font-size: 13px;">Community favorites</p>
+        <h2 data-template-id="popular-title" class="canva-text section-title mb-3 font-extrabold" style="color: rgb(16, 33, 61); font-weight: 800; font-style: normal; font-size: 42px;">Popular Tools</h2>
+        <p data-template-id="popular-copy" class="canva-text mx-auto max-w-2xl" style="color: rgb(100, 116, 139); font-weight: 400; font-style: normal; font-size: 17px;">Reliable utilities for the document, image, finance, and security tasks people handle every day.</p>
+       </div>
+       <div id="popular-grid" class="tool-grid"></div>
+      </div>
+     </section>
+     <section id="new" class="section">
+      <div class="site-width">
+       <p data-template-id="new-eyebrow" class="canva-text mb-3 font-extrabold uppercase tracking-[.18em]" style="color: rgb(23, 105, 224); font-weight: 800; font-style: normal; font-size: 13px;">Fresh workflows</p>
+       <h2 data-template-id="new-title" class="canva-text section-title mb-3 font-extrabold" style="color: rgb(16, 33, 61); font-weight: 800; font-style: normal; font-size: 38px;">New Tools</h2>
+       <p data-template-id="new-copy" class="canva-text mb-9 max-w-2xl" style="color: rgb(100, 116, 139); font-weight: 400; font-style: normal; font-size: 17px;">Precise image, writing, calculation, and metadata helpers recently added to the toolbox.</p>
+       <div id="new-grid" class="tool-grid"></div>
+      </div>
+     </section>
+     <section id="trending" class="section section-soft">
+      <div class="site-width">
+       <p data-template-id="trending-eyebrow" class="canva-text mb-3 font-extrabold uppercase tracking-[.18em]" style="color: rgb(23, 105, 224); font-weight: 800; font-style: normal; font-size: 13px;">In demand</p>
+       <h2 data-template-id="trending-title" class="canva-text section-title mb-3 font-extrabold" style="color: rgb(16, 33, 61); font-weight: 800; font-style: normal; font-size: 38px;">Trending Tools</h2>
+       <p data-template-id="trending-copy" class="canva-text mb-9 max-w-2xl" style="color: rgb(100, 116, 139); font-weight: 400; font-style: normal; font-size: 17px;">Popular solutions for smaller files, cleaner content, smarter tax calculations, and shareable QR codes.</p>
+       <div id="trending-grid" class="tool-grid"></div>
+      </div>
+     </section>
+     <section id="search-results" class="section hidden">
+      <div class="site-width">
+       <div class="mb-8 flex items-end justify-between gap-4">
+        <div>
+         <p class="mb-2 font-extrabold uppercase tracking-[.18em] text-blue-600">Search</p>
+         <h2 class="section-title text-3xl font-extrabold">Matching tools</h2>
+        </div><button id="clear-search" class="btn btn-secondary" type="button">Clear search</button>
+       </div>
+       <div id="results-grid" class="tool-grid"></div>
+       <div id="empty-search" class="glass hidden rounded-3xl p-10 text-center"><i data-lucide="search-x" class="mx-auto mb-4 h-10 w-10 text-blue-500"></i>
+        <h3 class="mb-2 text-xl font-extrabold">No matching tool found</h3>
+        <p style="color:var(--muted)">Try terms such as PDF, image, calculator, text, SEO, password, or QR.</p>
+       </div>
+      </div>
+     </section>
+     <section id="faq" class="section">
+      <div class="site-width max-w-4xl">
+       <div class="mb-9 text-center">
+        <p data-template-id="faq-eyebrow" class="canva-text mb-3 font-extrabold uppercase tracking-[.18em]" style="color: rgb(23, 105, 224); font-weight: 800; font-style: normal; font-size: 13px;">Helpful answers</p>
+        <h2 data-template-id="faq-title" class="canva-text section-title mb-3 font-extrabold" style="color: rgb(16, 33, 61); font-weight: 800; font-style: normal; font-size: 40px;">Frequently Asked Questions</h2>
+        <p data-template-id="faq-copy" class="canva-text" style="color: rgb(100, 116, 139); font-weight: 400; font-style: normal; font-size: 17px;">Understand how browser processing, file compatibility, and document conversion work.</p>
+       </div>
+       <div class="glass overflow-hidden rounded-3xl">
+        <div class="faq-item"><button class="faq-button flex w-full items-center justify-between gap-4 p-5 text-left font-extrabold" type="button" aria-expanded="false">Are my files uploaded to a server?<i data-lucide="chevron-down" class="faq-chevron"></i></button>
+         <div class="faq-answer">
+          No. BrandBlitz performs these operations inside your browser. Your selected files are not intentionally uploaded by this application.
+         </div>
+        </div>
+        <div class="faq-item"><button class="faq-button flex w-full items-center justify-between gap-4 p-5 text-left font-extrabold" type="button" aria-expanded="false">Which browsers work best?<i data-lucide="chevron-down" class="faq-chevron"></i></button>
+         <div class="faq-answer">
+          Current versions of Chrome, Edge, Firefox, and Safari are recommended. Large PDF operations need sufficient device memory.
+         </div>
+        </div>
+        <div class="faq-item"><button class="faq-button flex w-full items-center justify-between gap-4 p-5 text-left font-extrabold" type="button" aria-expanded="false">Why can PDF-to-Word formatting vary?<i data-lucide="chevron-down" class="faq-chevron"></i></button>
+         <div class="faq-answer">
+          PDF stores positioned page content rather than document structure. The tool extracts readable text into an editable Word-compatible document, but complex columns and graphics may differ.
+         </div>
+        </div>
+        <div class="faq-item"><button class="faq-button flex w-full items-center justify-between gap-4 p-5 text-left font-extrabold" type="button" aria-expanded="false">Are the tools free?<i data-lucide="chevron-down" class="faq-chevron"></i></button>
+         <div class="faq-answer">
+          Yes. All tools shown on this site can be used without creating an account or paying a subscription.
+         </div>
+        </div>
+       </div>
+      </div>
+     </section>
+    </div>
+    <section id="tool-view" class="tool-view hidden" aria-labelledby="tool-title">
+     <div class="site-width"><button id="back-home" class="btn btn-secondary mb-7" type="button"><i data-lucide="arrow-left"></i> All tools</button>
+      <div class="workspace">
+       <div>
+        <div class="mb-7"><span id="tool-category" class="tag mb-4"></span>
+         <h1 id="tool-title" class="section-title mb-3 text-4xl font-extrabold"></h1>
+         <p id="tool-description" class="max-w-3xl text-lg" style="color:var(--muted)"></p>
+        </div>
+        <div id="tool-panel" class="glass tool-panel"></div>
+       </div>
+       <aside class="glass side-panel" aria-label="Tool information">
+        <h2 class="mb-3 text-lg font-extrabold">Private browser workflow</h2>
+        <p class="mb-5 text-sm leading-relaxed" style="color:var(--muted)">Processing happens on this device. For best performance, close unused tabs before handling large files.</p>
+        <h2 class="mb-3 text-lg font-extrabold">Related tools</h2>
+        <div id="related-tools" class="grid gap-2"></div>
+       </aside>
+      </div>
+     </div>
+    </section>
+    <section id="info-view" class="section hidden" aria-labelledby="info-title">
+     <div class="site-width"><button id="info-back" class="btn btn-secondary mb-7" type="button"><i data-lucide="arrow-left"></i> Home</button>
+      <article class="glass legal-card">
+       <h1 id="info-title" class="section-title mb-6 text-4xl font-extrabold"></h1>
+       <div id="info-content"></div>
+      </article>
+     </div>
+    </section>
+   </main>
+   <footer data-template-id="site-footer" class="canva-footer bg-slate-950" style="background: rgb(7, 17, 31);">
+    <div class="site-width py-14">
+     <div class="grid gap-10 border-b border-slate-800 pb-10 md:grid-cols-[1.4fr_1fr_1fr]">
+      <div><a href="#home" class="mb-5 flex items-center gap-3"><span class="brand-mark"><i data-lucide="zap"></i></span><span data-template-id="footer-brand" class="canva-text font-extrabold" style="color: rgb(255, 255, 255); font-weight: 800; font-style: normal; font-size: 20px;">BrandBlitz Tools</span></a>
+       <p data-template-id="footer-copy" class="canva-text max-w-md leading-relaxed" style="color: rgb(144, 162, 188); font-weight: 400; font-style: normal; font-size: 15px;">Fast, private, and thoughtfully designed browser tools for everyday work and creative projects.</p>
+      </div>
+      <div>
+       <h2 data-template-id="footer-company-title" class="canva-text mb-5 font-bold" style="color: rgb(255, 255, 255); font-weight: 700; font-style: normal; font-size: 24px;">Company</h2>
+       <ul class="space-y-3">
+        <li><a data-template-id="footer-about" class="canva-link footer-link" href="#info/about" style="color: rgb(144, 162, 188); font-weight: 400; font-style: normal; font-size: 16px;">About</a></li>
+        <li><a data-template-id="footer-contact" class="canva-link footer-link" href="#info/contact" style="color: rgb(144, 162, 188); font-weight: 400; font-style: normal; font-size: 16px;">Contact</a></li>
+        <li><a data-template-id="footer-blog" class="canva-link footer-link" href="#info/blog" style="color: rgb(144, 162, 188); font-weight: 400; font-style: normal; font-size: 16px;">Blog</a></li>
+       </ul>
+      </div>
+      <div>
+       <h2 data-template-id="footer-legal-title" class="canva-text mb-5 font-bold" style="color: rgb(255, 255, 255); font-weight: 700; font-style: normal; font-size: 24px;">Legal</h2>
+       <ul class="space-y-3">
+        <li><a data-template-id="footer-privacy" class="canva-link footer-link" href="#info/privacy" style="color: rgb(144, 162, 188); font-weight: 400; font-style: normal; font-size: 16px;">Privacy Policy</a></li>
+        <li><a data-template-id="footer-terms" class="canva-link footer-link" href="#info/terms" style="color: rgb(144, 162, 188); font-weight: 400; font-style: normal; font-size: 16px;">Terms of Service</a></li>
+        <li><a data-template-id="footer-disclaimer" class="canva-link footer-link" href="#info/disclaimer" style="color: rgb(144, 162, 188); font-weight: 400; font-style: normal; font-size: 16px;">Disclaimer</a></li>
+       </ul>
+      </div>
+     </div>
+     <p data-template-id="footer-copyright" class="canva-text pt-7" style="color: rgb(113, 131, 156); font-weight: 400; font-style: normal; font-size: 14px;">© 2026 BrandBlitz Tools. All rights reserved.</p>
+    </div>
+   </footer>
+   <div id="toast" class="toast hidden" role="status" aria-live="polite"></div>
+   <div id="loading" class="loading hidden" role="status" aria-live="polite">
+    <div class="text-center text-white">
+     <div class="spinner mx-auto mb-4"></div>
+     <p id="loading-text" class="font-extrabold">Processing…</p>
+    </div>
+   </div>
+  </div>
+  <script src="/_sdk/c939c145c3c74230.editing_sdk.js" integrity="sha512-jh2pv/gl9Gzzn5dxfzwQO4wkqtnAQIim+LIUDYfVu2cdqPkQV2MqbjsDUW5IYbrSZFjRlOBrIWzlvWDXQYxOjg=="></script>
+  <script>
+document.addEventListener("DOMContentLoaded", () => {
+  if (window.pdfjsLib) pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js";
+
+  const tools = [
+    {id:"word-to-pdf",name:"Word to PDF",cat:"PDF",icon:"file-output",color:"g-blue",desc:"Convert DOCX content into a clean downloadable PDF.",group:"popular",keys:"word docx document convert"},
+    {id:"pdf-to-word",name:"PDF to Word",cat:"PDF",icon:"file-input",color:"g-violet",desc:"Extract PDF text into an editable Word-compatible document.",group:"popular",keys:"pdf doc word extract"},
+    {id:"merge-pdf",name:"Merge PDF",cat:"PDF",icon:"combine",color:"g-red",desc:"Combine multiple PDF files in your chosen order.",group:"popular",keys:"combine join documents"},
+    {id:"split-pdf",name:"Split PDF",cat:"PDF",icon:"scissors",color:"g-orange",desc:"Export selected pages or every page as separate PDF files.",group:"popular",keys:"pages separate extract"},
+    {id:"compress-pdf",name:"Compress PDF",cat:"PDF",icon:"minimize-2",color:"g-teal",desc:"Raster-compress PDF pages with adjustable quality.",group:"trending",keys:"reduce file size optimize"},
+    {id:"jpg-to-pdf",name:"JPG to PDF",cat:"PDF",icon:"images",color:"g-cyan",desc:"Package JPG or PNG images into a downloadable PDF.",group:"popular",keys:"images photos convert"},
+    {id:"image-compressor",name:"Image Compressor",cat:"Image",icon:"image-down",color:"g-cyan",desc:"Reduce image size with adjustable JPEG or WebP quality.",group:"popular",keys:"photo optimize size"},
+    {id:"resize-image",name:"Resize Image",cat:"Image",icon:"expand",color:"g-blue",desc:"Resize an image to exact pixel dimensions.",group:"new",keys:"dimensions width height"},
+    {id:"crop-image",name:"Crop Image",cat:"Image",icon:"crop",color:"g-orange",desc:"Crop an image using precise coordinates and dimensions.",group:"new",keys:"photo cut canvas"},
+    {id:"convert-image",name:"Convert PNG JPG WEBP",cat:"Image",icon:"refresh-cw",color:"g-violet",desc:"Convert images between PNG, JPEG, and WebP.",group:"new",keys:"format converter"},
+    {id:"word-counter",name:"Word Counter",cat:"Text",icon:"list-ordered",color:"g-blue",desc:"Count words, characters, sentences, and reading time.",group:"trending",keys:"text writing count"},
+    {id:"character-counter",name:"Character Counter",cat:"Text",icon:"type",color:"g-cyan",desc:"Measure characters with and without spaces.",group:"popular",keys:"letters length count"},
+    {id:"case-converter",name:"Case Converter",cat:"Text",icon:"case-upper",color:"g-violet",desc:"Convert text to upper, lower, title, or sentence case.",group:"new",keys:"uppercase lowercase title"},
+    {id:"remove-duplicates",name:"Remove Duplicate Lines",cat:"Text",icon:"list-x",color:"g-red",desc:"Remove repeated lines while preserving their first occurrence.",group:"trending",keys:"clean unique lines"},
+    {id:"age-calculator",name:"Age Calculator",cat:"Calculator",icon:"calendar-days",color:"g-blue",desc:"Calculate exact age and the next birthday.",group:"popular",keys:"birthday date years"},
+    {id:"gst-calculator",name:"GST Calculator",cat:"Calculator",icon:"badge-indian-rupee",color:"g-orange",desc:"Add or remove GST from an amount in Indian rupees.",group:"trending",keys:"tax india amount"},
+    {id:"emi-calculator",name:"EMI Calculator",cat:"Calculator",icon:"landmark",color:"g-teal",desc:"Estimate monthly loan payment, interest, and total cost.",group:"popular",keys:"loan finance interest"},
+    {id:"percentage-calculator",name:"Percentage Calculator",cat:"Calculator",icon:"percent",color:"g-violet",desc:"Solve common percentage questions instantly.",group:"new",keys:"math percent increase"},
+    {id:"meta-tag-generator",name:"Meta Tag Generator",cat:"SEO",icon:"tags",color:"g-teal",desc:"Create essential search and social meta tags.",group:"new",keys:"website title description html"},
+    {id:"keyword-density",name:"Keyword Density Checker",cat:"SEO",icon:"bar-chart-3",color:"g-blue",desc:"Analyze keyword frequency and density in written content.",group:"trending",keys:"seo words analysis"},
+    {id:"password-generator",name:"Password Generator",cat:"Security",icon:"key-round",color:"g-red",desc:"Generate strong random passwords using secure browser cryptography.",group:"popular",keys:"secure random credentials"},
+    {id:"qr-code-generator",name:"QR Code Generator",cat:"Security",icon:"qr-code",color:"g-violet",desc:"Create and download a QR code for text or links.",group:"trending",keys:"barcode link scan"}
+  ];
+
+  const categories = [
+    ["PDF","file-text","g-red","Convert, merge, split, compress, and export documents."],
+    ["Image","image","g-cyan","Compress, resize, crop, and convert photos."],
+    ["Text","type","g-blue","Count, clean, and transform written content."],
+    ["Calculator","calculator","g-orange","Solve age, tax, loan, and percentage questions."],
+    ["SEO","trending-up","g-teal","Create metadata and analyze keyword usage."],
+    ["Security","shield-check","g-violet","Generate stronger passwords and QR codes."]
+  ];
+
+  const $ = id => document.getElementById(id);
+  const homeView=$("home-view"), toolView=$("tool-view"), infoView=$("info-view"), panel=$("tool-panel");
+  let toastTimer;
+
+  function icons(){ lucide.createIcons(); }
+  function esc(s=""){return s.replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+  function showToast(msg){clearTimeout(toastTimer);$("toast").textContent=msg;$("toast").classList.remove("hidden");toastTimer=setTimeout(()=>$("toast").classList.add("hidden"),2400)}
+  function busy(on,text="Processing…"){$("loading-text").textContent=text;$("loading").classList.toggle("hidden",!on)}
+  function download(blob,name){const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
+  async function copyText(text){try{await navigator.clipboard.writeText(text);showToast("Copied to clipboard")}catch{showToast("Copy was blocked by the browser")}}
+  function fileSize(n){return n<1024?n+" B":n<1048576?(n/1024).toFixed(1)+" KB":(n/1048576).toFixed(2)+" MB"}
+  function status(msg,type="success"){const el=$("tool-status");if(el){el.textContent=msg;el.className="mt-4 text-sm font-bold "+(type==="error"?"status-error":"status-success")}}
+  function inputFile(id,accept,multiple=false){return `<div class="dropzone" data-drop-for="${id}"><div><i data-lucide="upload-cloud" class="mx-auto mb-3 h-9 w-9 text-blue-600"></i><label class="btn btn-secondary cursor-pointer" for="${id}">Choose file${multiple?"s":""}</label><input id="${id}" class="sr-only" type="file" accept="${accept}" ${multiple?"multiple":""}><p class="mt-3 text-sm" style="color:var(--muted)">You can also drag and drop here.</p><p id="${id}-name" class="mt-2 text-sm font-bold"></p></div></div>`}
+  function actions(label="Process"){return `<div class="mt-5 flex flex-wrap gap-3"><button id="run-tool" class="btn btn-primary" type="button"><i data-lucide="sparkles"></i>${label}</button><button id="reset-tool" class="btn btn-secondary" type="button">Reset</button></div><p id="tool-status" class="mt-4 text-sm font-bold" aria-live="polite"></p><div id="tool-result"></div>`}
+  function textArea(label="Enter text"){return `<div class="control"><label for="main-text">${label}</label><textarea id="main-text" class="textarea" placeholder="Type or paste text here…"></textarea></div><p id="tool-status" class="mt-4 text-sm font-bold" aria-live="polite"></p><div id="tool-result"></div>`}
+
+  function card(t){
+    return `<button type="button" class="tool-card" data-tool="${t.id}" aria-label="Open ${esc(t.name)}">
+      <div class="mb-6 flex items-start justify-between"><span class="icon-tile ${t.color}"><i data-lucide="${t.icon}"></i></span><i data-lucide="arrow-up-right" class="text-blue-500"></i></div>
+      <span class="tag mb-3 w-fit">${t.cat}</span><h3 class="mb-2 text-lg font-extrabold">${esc(t.name)}</h3>
+      <p class="text-sm leading-relaxed" style="color:var(--muted)">${esc(t.desc)}</p></button>`;
+  }
+  function renderHome(){
+    $("category-grid").innerHTML=categories.map(c=>`<button class="category-card" type="button" data-category="${c[0]}"><span class="icon-tile ${c[2]} mb-5"><i data-lucide="${c[1]}"></i></span><h3 class="mb-2 text-lg font-extrabold">${c[0]} Tools</h3><p class="text-sm leading-relaxed" style="color:var(--muted)">${c[3]}</p></button>`).join("");
+    ["popular","new","trending"].forEach(g=>$(g+"-grid").innerHTML=tools.filter(t=>t.group===g).slice(0,g==="popular"?8:4).map(card).join(""));
+    bindCards();icons();
+  }
+  function bindCards(){
+    document.querySelectorAll("[data-tool]").forEach(b=>b.onclick=()=>location.hash="tool/"+b.dataset.tool);
+    document.querySelectorAll("[data-category]").forEach(b=>b.onclick=()=>searchTools(b.dataset.category));
+  }
+  function searchTools(q){
+    q=q.trim().toLowerCase();
+    const found=tools.filter(t=>(t.name+" "+t.cat+" "+t.desc+" "+t.keys).toLowerCase().includes(q));
+    $("results-grid").innerHTML=found.map(card).join("");
+    $("empty-search").classList.toggle("hidden",found.length>0);
+    $("search-results").classList.remove("hidden");
+    $("search-status").textContent=found.length?`${found.length} matching tool${found.length===1?"":"s"} found`:"No matching tools found";
+    bindCards();icons();$("search-results").scrollIntoView({behavior:"smooth"});
+    return found;
+  }
+
+  function showHome(anchor){
+    homeView.classList.remove("hidden");toolView.classList.add("hidden");infoView.classList.add("hidden");
+    document.title="BrandBlitz Tools — Free Online PDF, Image, SEO and Calculator Tools";
+    setTimeout(()=>{const target=anchor&&$(anchor);(target||document.body).scrollIntoView({behavior:"smooth",block:"start"})},20);
+  }
+  function showTool(id){
+    const t=tools.find(x=>x.id===id);if(!t){showHome();return}
+    homeView.classList.add("hidden");infoView.classList.add("hidden");toolView.classList.remove("hidden");
+    $("tool-category").textContent=t.cat+" Tool";$("tool-title").textContent=t.name;$("tool-description").textContent=t.desc;
+    document.title=t.name+" — BrandBlitz Tools";
+    $("related-tools").innerHTML=tools.filter(x=>x.cat===t.cat&&x.id!==id).slice(0,4).map(x=>`<button class="btn btn-secondary justify-start" data-tool="${x.id}" type="button">${esc(x.name)}</button>`).join("");
+    panel.innerHTML=toolMarkup(id);bindTool(id);bindCards();icons();window.scrollTo({top:0,behavior:"smooth"});
+  }
+
+  function toolMarkup(id){
+    if(["word-to-pdf","pdf-to-word","merge-pdf","split-pdf","compress-pdf","jpg-to-pdf"].includes(id)){
+      const cfg={
+        "word-to-pdf":[".docx","Convert to PDF",false],
+        "pdf-to-word":[".pdf","Convert to Word",false],
+        "merge-pdf":[".pdf","Merge PDFs",true],
+        "split-pdf":[".pdf","Split PDF",false],
+        "compress-pdf":[".pdf","Compress PDF",false],
+        "jpg-to-pdf":["image/jpeg,image/png","Create PDF",true]
+      }[id];
+      let extra=id==="split-pdf"?`<div class="control mt-4"><label for="page-range">Pages (example: 1,3-5) — leave blank for every page</label><input id="page-range" class="field" placeholder="1,3-5"></div>`:"";
+      if(id==="compress-pdf")extra=`<div class="control mt-4"><label for="pdf-quality">Compression quality</label><input id="pdf-quality" class="field" type="range" min="0.25" max="0.9" step="0.05" value="0.55"><span class="text-sm" style="color:var(--muted)">Lower quality creates a smaller rasterized PDF.</span></div>`;
+      return inputFile("main-file",cfg[0],cfg[2])+extra+actions(cfg[1]);
+    }
+    if(["image-compressor","resize-image","crop-image","convert-image"].includes(id)){
+      let extra="";
+      if(id==="image-compressor")extra=`<div class="control mt-4"><label for="image-quality">Quality</label><input id="image-quality" class="field" type="range" min=".1" max="1" step=".05" value=".72"></div>`;
+      if(id==="resize-image")extra=`<div class="form-grid mt-4"><div class="control"><label for="width">Width (px)</label><input id="width" class="field" type="number" min="1" value="1200"></div><div class="control"><label for="height">Height (px)</label><input id="height" class="field" type="number" min="1" value="800"></div></div><label class="mt-3 flex gap-2"><input id="lock-ratio" type="checkbox" checked> Keep aspect ratio</label>`;
+      if(id==="crop-image")extra=`<div class="form-grid mt-4"><div class="control"><label for="crop-x">X</label><input id="crop-x" class="field" type="number" min="0" value="0"></div><div class="control"><label for="crop-y">Y</label><input id="crop-y" class="field" type="number" min="0" value="0"></div><div class="control"><label for="crop-w">Width</label><input id="crop-w" class="field" type="number" min="1"></div><div class="control"><label for="crop-h">Height</label><input id="crop-h" class="field" type="number" min="1"></div></div>`;
+      if(id==="convert-image")extra=`<div class="control mt-4"><label for="output-format">Output format</label><select id="output-format" class="select"><option value="image/png">PNG</option><option value="image/jpeg">JPG</option><option value="image/webp">WEBP</option></select></div>`;
+      return inputFile("main-file","image/*")+`<div id="image-preview-wrap" class="mt-4 hidden"><img id="image-preview" class="max-h-72 rounded-2xl border object-contain" style="border-color:var(--line)" alt="Selected image preview"></div>`+extra+actions(id==="crop-image"?"Crop & Download":"Process Image");
+    }
+    if(["word-counter","character-counter","case-converter","remove-duplicates"].includes(id)){
+      let buttons="";
+      if(id==="case-converter")buttons=`<div class="mt-4 flex flex-wrap gap-2"><button class="btn btn-secondary case-btn" data-case="upper" type="button">UPPERCASE</button><button class="btn btn-secondary case-btn" data-case="lower" type="button">lowercase</button><button class="btn btn-secondary case-btn" data-case="title" type="button">Title Case</button><button class="btn btn-secondary case-btn" data-case="sentence" type="button">Sentence case</button></div>`;
+      if(id==="remove-duplicates")buttons=`<label class="mt-4 flex gap-2"><input id="ignore-case" type="checkbox"> Ignore letter case</label><button id="run-tool" class="btn btn-primary mt-4" type="button">Remove duplicates</button>`;
+      return textArea()+buttons+`<div class="mt-4 flex gap-2"><button id="copy-output" class="btn btn-secondary" type="button"><i data-lucide="copy"></i> Copy output</button><button id="download-text" class="btn btn-secondary" type="button"><i data-lucide="download"></i> Download</button></div>`;
+    }
+    if(["age-calculator","gst-calculator","emi-calculator","percentage-calculator"].includes(id)){
+      if(id==="age-calculator")return `<div class="form-grid"><div class="control"><label for="birth-date">Date of birth</label><input id="birth-date" class="field" type="date"></div><div class="control"><label for="target-date">Calculate on</label><input id="target-date" class="field" type="date"></div></div>`+actions("Calculate age");
+      if(id==="gst-calculator")return `<div class="form-grid"><div class="control"><label for="amount">Amount (₹)</label><input id="amount" class="field" type="number" min="0" step=".01"></div><div class="control"><label for="gst-rate">GST rate</label><select id="gst-rate" class="select"><option>5</option><option>12</option><option selected>18</option><option>28</option></select></div></div><div class="control mt-4"><label for="gst-mode">Calculation</label><select id="gst-mode" class="select"><option value="add">Add GST</option><option value="remove">Remove included GST</option></select></div>`+actions("Calculate GST");
+      if(id==="emi-calculator")return `<div class="form-grid"><div class="control"><label for="principal">Loan amount (₹)</label><input id="principal" class="field" type="number" min="1"></div><div class="control"><label for="rate">Annual interest (%)</label><input id="rate" class="field" type="number" min="0" step=".01"></div><div class="control"><label for="months">Term (months)</label><input id="months" class="field" type="number" min="1"></div></div>`+actions("Calculate EMI");
+      return `<div class="control"><label for="percent-mode">Question</label><select id="percent-mode" class="select"><option value="of">What is X% of Y?</option><option value="is">X is what percent of Y?</option><option value="change">Percentage change from X to Y</option></select></div><div class="form-grid mt-4"><div class="control"><label for="value-x">X</label><input id="value-x" class="field" type="number" step="any"></div><div class="control"><label for="value-y">Y</label><input id="value-y" class="field" type="number" step="any"></div></div>`+actions("Calculate");
+    }
+    if(id==="meta-tag-generator")return `<div class="form-grid"><div class="control"><label for="meta-title">Page title</label><input id="meta-title" class="field" maxlength="70"></div><div class="control"><label for="meta-url">Canonical URL</label><input id="meta-url" class="field" type="url" placeholder="https://example.com/page"></div></div><div class="control mt-4"><label for="meta-description">Description</label><textarea id="meta-description" class="textarea" maxlength="170"></textarea></div><div class="control mt-4"><label for="meta-keywords">Keywords, comma separated</label><input id="meta-keywords" class="field"></div>`+actions("Generate meta tags");
+    if(id==="keyword-density")return textArea("Content to analyze")+`<div class="control mt-4"><label for="focus-keyword">Focus keyword or phrase</label><input id="focus-keyword" class="field"></div><button id="run-tool" class="btn btn-primary mt-4" type="button">Analyze density</button>`;
+    if(id==="password-generator")return `<div class="control"><label for="password-length">Length: <span id="length-value">20</span></label><input id="password-length" class="field" type="range" min="8" max="64" value="20"></div><div class="mt-4 grid gap-3 sm:grid-cols-2"><label><input id="pw-upper" type="checkbox" checked> Uppercase</label><label><input id="pw-lower" type="checkbox" checked> Lowercase</label><label><input id="pw-number" type="checkbox" checked> Numbers</label><label><input id="pw-symbol" type="checkbox" checked> Symbols</label></div>`+actions("Generate password");
+    return `<div class="control"><label for="qr-text">Text or URL</label><textarea id="qr-text" class="textarea" placeholder="https://example.com"></textarea></div><div class="form-grid mt-4"><div class="control"><label for="qr-size">Size</label><select id="qr-size" class="select"><option value="256">256 px</option><option value="512" selected>512 px</option><option value="768">768 px</option></select></div><div class="control"><label for="qr-level">Error correction</label><select id="qr-level" class="select"><option>L</option><option selected>M</option><option>Q</option><option>H</option></select></div></div>`+actions("Generate QR code");
+  }
+
+  function bindDrops(){
+    document.querySelectorAll(".dropzone").forEach(zone=>{
+      const input=$(zone.dataset.dropFor),name=$(input.id+"-name");
+      const update=()=>{name.textContent=[...input.files].map(f=>f.name).join(", ")};
+      input.addEventListener("change",update);
+      zone.addEventListener("dragover",e=>{e.preventDefault();zone.classList.add("drag")});
+      zone.addEventListener("dragleave",()=>zone.classList.remove("drag"));
+      zone.addEventListener("drop",e=>{e.preventDefault();zone.classList.remove("drag");input.files=e.dataTransfer.files;update();input.dispatchEvent(new Event("change"))});
+    });
+  }
+  function resetPanel(id){panel.innerHTML=toolMarkup(id);bindTool(id);icons()}
+  function bindTool(id){
+    bindDrops();
+    const reset=$("reset-tool");if(reset)reset.onclick=()=>resetPanel(id);
+    if(id.startsWith("word-")||id.startsWith("pdf-")||["merge-pdf","split-pdf","compress-pdf","jpg-to-pdf"].includes(id)) bindPdf(id);
+    else if(["image-compressor","resize-image","crop-image","convert-image"].includes(id)) bindImage(id);
+    else if(["word-counter","character-counter","case-converter","remove-duplicates"].includes(id)) bindText(id);
+    else if(["age-calculator","gst-calculator","emi-calculator","percentage-calculator"].includes(id)) bindCalc(id);
+    else if(id==="meta-tag-generator"||id==="keyword-density") bindSeo(id);
+    else bindSecurity(id);
+  }
+
+  function getFiles(){return [...$("main-file").files]}
+  async function bindPdf(id){
+    $("run-tool").onclick=async()=>{
+      const files=getFiles();if(!files.length)return status("Choose the required file first.","error");
+      busy(true,"Processing file…");
+      try{
+        if(id==="word-to-pdf"){
+          const result=await mammoth.extractRawText({arrayBuffer:await files[0].arrayBuffer()});
+          const doc=new jspdf.jsPDF({unit:"pt",format:"a4"}),lines=doc.splitTextToSize(result.value||" ",500);
+          let y=60;lines.forEach(line=>{if(y>790){doc.addPage();y=60}doc.text(line,48,y);y+=17});doc.save(files[0].name.replace(/\.docx$/i,"")+".pdf");
+        }
+        if(id==="pdf-to-word"){
+          const pdf=await pdfjsLib.getDocument({data:await files[0].arrayBuffer()}).promise;let html="<html><body>";
+          for(let i=1;i<=pdf.numPages;i++){const p=await pdf.getPage(i),c=await p.getTextContent();html+=`<h2>Page ${i}</h2><p>${esc(c.items.map(x=>x.str).join(" "))}</p>`}html+="</body></html>";
+          download(new Blob([html],{type:"application/msword"}),files[0].name.replace(/\.pdf$/i,"")+".doc");
+        }
+        if(id==="merge-pdf"){
+          if(files.length<2)throw Error("Choose at least two PDF files.");
+          const out=await PDFLib.PDFDocument.create();
+          for(const f of files){const src=await PDFLib.PDFDocument.load(await f.arrayBuffer());const pages=await out.copyPages(src,src.getPageIndices());pages.forEach(p=>out.addPage(p))}
+          download(new Blob([await out.save()],{type:"application/pdf"}),"merged.pdf");
+        }
+        if(id==="split-pdf"){
+          const src=await PDFLib.PDFDocument.load(await files[0].arrayBuffer()),total=src.getPageCount(),raw=$("page-range").value.trim();
+          const indices=parsePages(raw,total);for(const idx of indices){const out=await PDFLib.PDFDocument.create(),[p]=await out.copyPages(src,[idx]);out.addPage(p);download(new Blob([await out.save()],{type:"application/pdf"}),`page-${idx+1}.pdf`)}
+        }
+        if(id==="compress-pdf"){
+          const quality=+$("pdf-quality").value,pdf=await pdfjsLib.getDocument({data:await files[0].arrayBuffer()}).promise;
+          const out=new jspdf.jsPDF({unit:"pt",format:"a4",compress:true});out.deletePage(1);
+          for(let i=1;i<=pdf.numPages;i++){const p=await pdf.getPage(i),v=p.getViewport({scale:1.35}),c=document.createElement("canvas");c.width=v.width;c.height=v.height;await p.render({canvasContext:c.getContext("2d"),viewport:v}).promise;const landscape=v.width>v.height;out.addPage(landscape?"a4":"a4",landscape?"landscape":"portrait");const w=out.internal.pageSize.getWidth(),h=out.internal.pageSize.getHeight();out.addImage(c.toDataURL("image/jpeg",quality),"JPEG",0,0,w,h,undefined,"FAST")}out.save("compressed-"+files[0].name);
+        }
+        if(id==="jpg-to-pdf"){
+          const doc=new jspdf.jsPDF();doc.deletePage(1);
+          for(const f of files){const img=await loadImage(f),land=img.width>img.height;doc.addPage("a4",land?"landscape":"portrait");const w=doc.internal.pageSize.getWidth(),h=doc.internal.pageSize.getHeight(),scale=Math.min(w/img.width,h/img.height),iw=img.width*scale,ih=img.height*scale;doc.addImage(img,f.type.includes("png")?"PNG":"JPEG",(w-iw)/2,(h-ih)/2,iw,ih)}doc.save("images.pdf");
+        }
+        status("Finished. Your download has started.");
+      }catch(e){status(e.message||"The file could not be processed.","error")}finally{busy(false)}
+    };
+  }
+  function parsePages(raw,total){
+    if(!raw)return Array.from({length:total},(_,i)=>i);const set=new Set;
+    raw.split(",").forEach(part=>{const [a,b]=part.trim().split("-").map(Number);if(!a)return;if(b){for(let i=a;i<=b;i++)if(i<=total)set.add(i-1)}else if(a<=total)set.add(a-1)});
+    if(!set.size)throw Error("Enter valid page numbers.");return [...set].sort((a,b)=>a-b);
+  }
+  function loadImage(file){return new Promise((resolve,reject)=>{const i=new Image;i.onload=()=>{URL.revokeObjectURL(i.src);resolve(i)};i.onerror=reject;i.src=URL.createObjectURL(file)})}
+  function canvasBlob(canvas,type,quality){return new Promise(r=>canvas.toBlob(r,type,quality))}
+  function bindImage(id){
+    let img,file;
+    $("main-file").addEventListener("change",async()=>{file=getFiles()[0];if(!file)return;img=await loadImage(file);$("image-preview").src=URL.createObjectURL(file);$("image-preview-wrap").classList.remove("hidden");if(id==="crop-image"){$("crop-w").value=img.width;$("crop-h").value=img.height}if(id==="resize-image"){$("width").value=img.width;$("height").value=img.height}});
+    if(id==="resize-image")$("width").addEventListener("input",()=>{if(img&&$("lock-ratio").checked)$("height").value=Math.round(+$("width").value*img.height/img.width)});
+    $("run-tool").onclick=async()=>{if(!img||!file)return status("Choose an image first.","error");busy(true,"Processing image…");try{
+      const c=document.createElement("canvas"),ctx=c.getContext("2d");let type="image/jpeg",quality=.9,name="processed.jpg";
+      if(id==="image-compressor"){c.width=img.width;c.height=img.height;ctx.drawImage(img,0,0);type=file.type==="image/webp"?"image/webp":"image/jpeg";quality=+$("image-quality").value;name="compressed."+ (type==="image/webp"?"webp":"jpg")}
+      if(id==="resize-image"){c.width=+$("width").value;c.height=+$("height").value;if(!c.width||!c.height)throw Error("Enter valid dimensions.");ctx.drawImage(img,0,0,c.width,c.height);type=file.type||"image/png";name="resized."+type.split("/")[1].replace("jpeg","jpg")}
+      if(id==="crop-image"){const x=+$("crop-x").value,y=+$("crop-y").value,w=+$("crop-w").value,h=+$("crop-h").value;if(w<1||h<1||x+w>img.width||y+h>img.height)throw Error("Crop area must stay inside the image.");c.width=w;c.height=h;ctx.drawImage(img,x,y,w,h,0,0,w,h);type=file.type||"image/png";name="cropped."+type.split("/")[1].replace("jpeg","jpg")}
+      if(id==="convert-image"){type=$("output-format").value;c.width=img.width;c.height=img.height;if(type==="image/jpeg"){ctx.fillStyle="#fff";ctx.fillRect(0,0,c.width,c.height)}ctx.drawImage(img,0,0);name="converted."+(type==="image/jpeg"?"jpg":type.split("/")[1])}
+      const blob=await canvasBlob(c,type,quality);download(blob,name);$("tool-result").innerHTML=`<div class="result"><strong>Output size: ${fileSize(blob.size)}</strong><p class="mt-1 text-sm" style="color:var(--muted)">Original: ${fileSize(file.size)}</p></div>`;status("Image processed and downloaded.");
+    }catch(e){status(e.message,"error")}finally{busy(false)}};
+  }
+
+  function textStats(text){const words=text.trim()?text.trim().split(/\s+/):[],sent=(text.match(/[.!?]+(?=\s|$)/g)||[]).length;return{words:words.length,chars:text.length,noSpaces:text.replace(/\s/g,"").length,sentences:sent,minutes:Math.max(0,Math.ceil(words.length/200))}}
+  function bindText(id){
+    const ta=$("main-text"),result=$("tool-result");let output="";
+    function render(){
+      const s=textStats(ta.value);
+      if(id==="word-counter")result.innerHTML=`<div class="result result-grid"><div class="metric"><strong>${s.words}</strong>Words</div><div class="metric"><strong>${s.chars}</strong>Characters</div><div class="metric"><strong>${s.sentences}</strong>Sentences</div><div class="metric"><strong>${s.minutes}</strong>Min read</div></div>`;
+      if(id==="character-counter")result.innerHTML=`<div class="result result-grid"><div class="metric"><strong>${s.chars}</strong>With spaces</div><div class="metric"><strong>${s.noSpaces}</strong>Without spaces</div><div class="metric"><strong>${s.words}</strong>Words</div></div>`;
+    }
+    ta.addEventListener("input",render);render();
+    document.querySelectorAll(".case-btn").forEach(b=>b.onclick=()=>{const v=ta.value,type=b.dataset.case;output=type==="upper"?v.toUpperCase():type==="lower"?v.toLowerCase():type==="title"?v.toLowerCase().replace(/\b\w/g,c=>c.toUpperCase()):v.toLowerCase().replace(/(^\s*\w|[.!?]\s+\w)/g,c=>c.toUpperCase());ta.value=output;render();status("Text converted.")});
+    if(id==="remove-duplicates")$("run-tool").onclick=()=>{const seen=new Set,ignore=$("ignore-case").checked;output=ta.value.split(/\r?\n/).filter(line=>{const key=ignore?line.toLowerCase():line;if(seen.has(key))return false;seen.add(key);return true}).join("\n");ta.value=output;render();status("Duplicate lines removed.")};
+    $("copy-output").onclick=()=>copyText(ta.value);$("download-text").onclick=()=>download(new Blob([ta.value],{type:"text/plain"}),"brandblitz-text.txt");
+  }
+
+  function money(n){return new Intl.NumberFormat("en-IN",{style:"currency",currency:"INR",maximumFractionDigits:2}).format(n)}
+  function metrics(items){$("tool-result").innerHTML=`<div class="result result-grid">${items.map(x=>`<div class="metric"><strong>${x[1]}</strong>${x[0]}</div>`).join("")}</div>`}
+  function bindCalc(id){
+    if(id==="age-calculator")$("target-date").value=new Date().toISOString().slice(0,10);
+    $("run-tool").onclick=()=>{
+      try{
+        if(id==="age-calculator"){const b=new Date($("birth-date").value+"T00:00:00"),t=new Date($("target-date").value+"T00:00:00");if(isNaN(b)||b>t)throw Error("Choose valid dates.");let y=t.getFullYear()-b.getFullYear(),m=t.getMonth()-b.getMonth(),d=t.getDate()-b.getDate();if(d<0){m--;d+=new Date(t.getFullYear(),t.getMonth(),0).getDate()}if(m<0){y--;m+=12}const days=Math.floor((t-b)/86400000);metrics([["Years",y],["Months",m],["Days",d],["Total days",days.toLocaleString("en-IN")]])}
+        if(id==="gst-calculator"){const a=+$("amount").value,r=+$("gst-rate").value;if(a<0||!isFinite(a))throw Error("Enter a valid amount.");const tax=$("gst-mode").value==="add"?a*r/100:a-a/(1+r/100),base=$("gst-mode").value==="add"?a:a-tax,total=$("gst-mode").value==="add"?a+tax:a;metrics([["Base amount",money(base)],["GST",money(tax)],["Total",money(total)]])}
+        if(id==="emi-calculator"){const p=+$("principal").value,annual=+$("rate").value,n=+$("months").value;if(p<=0||annual<0||n<=0)throw Error("Enter valid loan details.");const r=annual/1200,emi=r?p*r*Math.pow(1+r,n)/(Math.pow(1+r,n)-1):p/n,total=emi*n;metrics([["Monthly EMI",money(emi)],["Total interest",money(total-p)],["Total payment",money(total)]])}
+        if(id==="percentage-calculator"){const x=+$("value-x").value,y=+$("value-y").value,mode=$("percent-mode").value;let v,label;if(mode==="of"){v=x*y/100;label=`${x}% of ${y}`}else if(mode==="is"){if(y===0)throw Error("Y cannot be zero.");v=x/y*100;label=`${x} is this % of ${y}`}else{if(x===0)throw Error("Starting value cannot be zero.");v=(y-x)/Math.abs(x)*100;label="Percentage change"}metrics([[label,Number(v.toFixed(4))+"%"]])}
+        status("Calculation complete.");
+      }catch(e){status(e.message,"error")}
+    };
+  }
+
+  function bindSeo(id){
+    $("run-tool").onclick=()=>{
+      if(id==="meta-tag-generator"){
+        const title=$("meta-title").value.trim(),desc=$("meta-description").value.trim(),url=$("meta-url").value.trim(),keys=$("meta-keywords").value.trim();if(!title||!desc)return status("Enter a title and description.","error");
+        const code=`<title>${esc(title)}</title>\n<meta name="description" content="${esc(desc)}">\n${keys?`<meta name="keywords" content="${esc(keys)}">\n`:""}${url?`<link rel="canonical" href="${esc(url)}">\n<meta property="og:url" content="${esc(url)}">\n`:""}<meta property="og:title" content="${esc(title)}">\n<meta property="og:description" content="${esc(desc)}">\n<meta name="twitter:card" content="summary_large_image">`;
+        $("tool-result").innerHTML=`<div class="result"><div class="mb-3 flex justify-between"><strong>Generated HTML</strong><button id="copy-meta" class="btn btn-secondary" type="button">Copy</button></div><pre class="overflow-auto whitespace-pre-wrap text-sm">${esc(code)}</pre></div>`;$("copy-meta").onclick=()=>copyText(code);status("Meta tags generated.");
+      }else{
+        const text=$("main-text").value.toLowerCase(),kw=$("focus-keyword").value.trim().toLowerCase();if(!text||!kw)return status("Enter content and a focus keyword.","error");
+        const words=text.match(/\b[\p{L}\p{N}'-]+\b/gu)||[],matches=(text.match(new RegExp(kw.replace(/[.*+?^${}()|[\]\\]/g,"\\$&"),"g"))||[]).length,density=words.length?matches/words.length*100:0;
+        const freq={};words.forEach(w=>freq[w]=(freq[w]||0)+1);const top=Object.entries(freq).sort((a,b)=>b[1]-a[1]).slice(0,8);
+        $("tool-result").innerHTML=`<div class="result result-grid"><div class="metric"><strong>${words.length}</strong>Total words</div><div class="metric"><strong>${matches}</strong>Keyword uses</div><div class="metric"><strong>${density.toFixed(2)}%</strong>Density</div></div><div class="result"><strong>Frequent words</strong><div class="mt-3 flex flex-wrap gap-2">${top.map(x=>`<span class="tag">${esc(x[0])}: ${x[1]}</span>`).join("")}</div></div>`;status("Analysis complete.");
+      }
+    };
+  }
+
+  function bindSecurity(id){
+    if(id==="password-generator"){
+      $("password-length").oninput=()=>$("length-value").textContent=$("password-length").value;
+      $("run-tool").onclick=()=>{let chars="";if($("pw-upper").checked)chars+="ABCDEFGHIJKLMNOPQRSTUVWXYZ";if($("pw-lower").checked)chars+="abcdefghijklmnopqrstuvwxyz";if($("pw-number").checked)chars+="0123456789";if($("pw-symbol").checked)chars+="!@#$%^&*()-_=+[]{}?";if(!chars)return status("Select at least one character set.","error");const n=+$("password-length").value,a=new Uint32Array(n);crypto.getRandomValues(a);const pw=[...a].map(x=>chars[x%chars.length]).join("");$("tool-result").innerHTML=`<div class="result"><label class="font-bold" for="generated-password">Generated password</label><div class="mt-3 flex gap-2"><input id="generated-password" class="field" readonly value="${esc(pw)}"><button id="copy-password" class="btn btn-primary" type="button">Copy</button></div></div>`;$("copy-password").onclick=()=>copyText(pw);status("Strong password generated.")};
+    }else{
+      $("run-tool").onclick=async()=>{const text=$("qr-text").value.trim();if(!text)return status("Enter text or a URL.","error");try{const canvas=document.createElement("canvas");await QRCode.toCanvas(canvas,text,{width:+$("qr-size").value,errorCorrectionLevel:$("qr-level").value,margin:2,color:{dark:"#07111f",light:"#ffffff"}});$("tool-result").innerHTML=`<div class="result text-center"><div id="qr-holder" class="mx-auto mb-4 inline-block rounded-2xl bg-white p-4"></div><button id="download-qr" class="btn btn-primary" type="button"><i data-lucide="download"></i>Download PNG</button></div>`;$("qr-holder").appendChild(canvas);$("download-qr").onclick=()=>canvas.toBlob(b=>download(b,"brandblitz-qr.png"));icons();status("QR code generated.")}catch{status("Could not generate the QR code.","error")}};
+    }
+  }
+
+  const infoPages={
+    about:["About BrandBlitz Tools","<p>BrandBlitz Tools is a collection of focused browser utilities for documents, images, writing, calculations, SEO, and security tasks.</p><p>Our goal is to make everyday digital work faster without unnecessary accounts, complicated menus, or avoidable uploads.</p>"],
+    contact:["Contact","<p>For general questions, accessibility feedback, or tool suggestions, email <a class='text-blue-600 font-bold' href='mailto:https://sanatana-hub.blogspot.com/p/contact-us.html'>hello@brandblitz.tools</a>.</p><p>Please do not send confidential documents or sensitive personal information by email.</p>"],
+    privacy:["Privacy Policy","<p>BrandBlitz processes tool inputs in your browser. This Codelet does not intentionally transmit or retain selected files or generated content.</p><p>Third-party browser libraries are loaded to perform document and QR operations. Do not process files containing highly sensitive information on shared devices.</p>"],
+    terms:["Terms of Service","<p>These tools are provided for lawful personal and business use. You remain responsible for the files, text, and calculations you create.</p><p>Do not use the service to violate copyright, privacy, security, or other applicable laws.</p>"],
+    disclaimer:["Disclaimer","<p>Results are provided as practical utilities and may vary with file structure, browser support, and device resources.</p><p>Calculator and SEO outputs are informational and are not financial, tax, legal, or professional advice. Verify important results independently.</p>"],
+    blog:["BrandBlitz Blog","<p>Explore concise guides for optimizing images, preparing documents, improving metadata, and working more efficiently online.</p><h2 class='mt-6 text-2xl font-extrabold'>Quick guide: smaller files</h2><p>Choose WebP for modern websites, JPEG for photographs, and PNG when transparent backgrounds are essential. For PDFs, moderate raster quality usually balances clarity and size.</p>"]
+  };
+  function showInfo(id){const p=infoPages[id]||infoPages.about;homeView.classList.add("hidden");toolView.classList.add("hidden");infoView.classList.remove("hidden");$("info-title").textContent=p[0];$("info-content").innerHTML=p[1];document.title=p[0]+" — BrandBlitz Tools";window.scrollTo({top:0,behavior:"smooth"})}
+  function route(){const hash=location.hash.replace(/^#/,"")||"home";const parts=hash.split("/");if(parts[0]==="tool")showTool(parts[1]);else if(parts[0]==="info")showInfo(parts[1]);else showHome(parts[1])}
+
+  $("search-form").onsubmit=e=>{e.preventDefault();const found=searchTools($("tool-search").value);if(found.length===1)location.hash="tool/"+found[0].id};
+  $("tool-search").oninput=()=>{if(!$("tool-search").value.trim()){$("search-results").classList.add("hidden");$("search-status").textContent=""}};
+  $("clear-search").onclick=()=>{$("tool-search").value="";$("search-results").classList.add("hidden");$("search-status").textContent="";$("tool-search").focus()};
+  $("browse-button").onclick=()=>$("popular").scrollIntoView({behavior:"smooth"});
+  $("category-button").onclick=()=>$("categories").scrollIntoView({behavior:"smooth"});
+  $("all-tools-button").onclick=()=>{location.hash="home/popular"};
+  $("back-home").onclick=()=>{location.hash="home/popular"};
+  $("info-back").onclick=()=>{location.hash="home"};
+  $("mobile-toggle").onclick=()=>{const open=$("mobile-menu").classList.toggle("hidden")===false;$("mobile-toggle").setAttribute("aria-expanded",String(open))};
+  $("mobile-menu").querySelectorAll("a").forEach(a=>a.onclick=()=>$("mobile-menu").classList.add("hidden"));
+  $("theme-toggle").onclick=()=>{const dark=document.body.classList.toggle("dark");$("theme-toggle").setAttribute("aria-pressed",String(dark));$("theme-toggle").setAttribute("aria-label",dark?"Enable light mode":"Enable dark mode");document.querySelector(".theme-moon").classList.toggle("hidden",dark);document.querySelector(".theme-sun").classList.toggle("hidden",!dark)};
+  document.querySelectorAll(".faq-button").forEach(btn=>btn.onclick=()=>{const item=btn.closest(".faq-item"),open=item.classList.toggle("open");btn.setAttribute("aria-expanded",String(open))});
+  window.addEventListener("hashchange",route);
+
+  renderHome();route();icons();
+});
+</script>
+   
+ 
+ 
+<div style="text-align:center;margin:30px 0;">
+  <a href="https://brandblitztools.blogspot.com/2026/07/brandblitz-tools-free-online-tools-for.html"
+     target="_blank"
+     style="display:inline-block;padding:15px 30px;background:#2563eb;color:#fff;text-decoration:none;font-size:18px;font-weight:700;border-radius:50px;box-shadow:0 8px 20px rgba(37,99,235,.3);">
+    🚀 Explore 100+ Free Online Tools
+  </a>
+</div>
