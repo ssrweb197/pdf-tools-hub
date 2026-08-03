@@ -1,3 +1,5 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,14 +20,130 @@
     <link rel="stylesheet" href="word-to-pdf.css">
 
     <!-- Third Party Browser Libraries for Client-Side DOCX -> Canvas -> PDF Processing -->
-    <!-- JSZip for extracting docx archives -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-    <!-- docx-preview for DOM rendering of docx elements -->
     <script src="https://cdn.jsdelivr.net/npm/docx-preview@0.3.3/dist/docx-preview.min.js"></script>
-    <!-- html2canvas for canvas capturing -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <!-- jsPDF for PDF generation -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <!-- pdf-lib for handling PDF manipulation -->
     <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
 </head>
+<body>
+
+    <!-- Navigation Header -->
+    <nav class="navbar navbar-expand-lg glass-nav sticky-top py-3">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center gap-2 fw-bold text-primary-gradient" href="#">
+                <i class="bi bi-file-earmark-pdf-fill fs-3 text-primary"></i>
+                <span>PDF Tools Hub</span>
+            </a>
+            <button class="btn btn-link nav-link ms-auto p-0" id="themeToggle" aria-label="Toggle Theme">
+                <i class="bi bi-moon-stars-fill text-warning fs-5" id="themeIcon"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Section -->
+    <main class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+
+                <!-- Header Intro -->
+                <div class="text-center mb-5">
+                    <h1 class="fw-bold display-5 mb-2">Word to PDF Converter</h1>
+                    <p class="text-muted fs-5">Fast, private, 100% client-side DOCX to PDF conversion directly in your browser.</p>
+                </div>
+
+                <!-- Card Container -->
+                <div class="glass-card rounded-4 p-4 p-md-5">
+
+                    <!-- State 1: Dropzone -->
+                    <div id="dropzoneState" class="upload-dropzone text-center" onclick="document.getElementById('docxFileInput').click();">
+                        <div class="upload-icon-circle bg-primary-subtle text-primary mx-auto mb-3">
+                            <i class="bi bi-cloud-arrow-up fs-1"></i>
+                        </div>
+                        <h4 class="fw-bold mb-2">Choose Word files or drop them here</h4>
+                        <p class="text-muted small mb-3">Supports standard .docx files</p>
+                        <button class="btn btn-primary rounded-pill px-4 py-2 hover-grow">
+                            <i class="bi bi-file-earmark-plus me-2"></i>Select File
+                        </button>
+                        <input type="file" id="docxFileInput" accept=".docx" multiple class="d-none">
+                    </div>
+
+                    <!-- State 2: Queue Table -->
+                    <div id="queueState" class="d-none">
+                        <div class="d-flex align-items-center justify-content-between mb-3">
+                            <h5 class="fw-bold mb-0">Files Selected <span class="badge bg-primary rounded-pill ms-1" id="fileCountBadge">0</span></h5>
+                            <div class="d-flex gap-2">
+                                <button class="btn btn-outline-primary btn-sm rounded-pill" onclick="document.getElementById('addMoreFileInput').click();">
+                                    <i class="bi bi-plus-lg me-1"></i>Add More
+                                </button>
+                                <input type="file" id="addMoreFileInput" accept=".docx" multiple class="d-none">
+                                <button class="btn btn-outline-danger btn-sm rounded-pill" id="clearAllBtn">
+                                    <i class="bi bi-trash me-1"></i>Clear All
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="table-responsive mb-4">
+                            <table class="table glass-table align-middle">
+                                <thead>
+                                    <tr>
+                                        <th>File Name</th>
+                                        <th>Size</th>
+                                        <th>Status</th>
+                                        <th class="text-end">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="fileListTableBody">
+                                    <!-- Dynamic rows generated by JS -->
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="text-center pt-2">
+                            <button id="startConversionBtn" class="btn btn-primary btn-lg rounded-pill px-5 hover-grow shadow">
+                                <i class="bi bi-gear-wide-connected me-2"></i>Convert to PDF
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- State 3: Processing Loader -->
+                    <div id="processingState" class="d-none text-center py-5">
+                        <div class="spinner-border text-primary mb-3" style="width: 3rem; height: 3rem;" role="status"></div>
+                        <h4 class="fw-bold mb-1" id="processingStatusTitle">Converting Document...</h4>
+                        <p class="text-muted small mb-4" id="processingStatusDetail">Preparing document layout...</p>
+                        
+                        <div class="progress rounded-pill mb-2" style="height: 12px; max-width: 500px; margin: 0 auto;">
+                            <div id="globalProgressBar" class="progress-bar bg-primary-gradient progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%;"></div>
+                        </div>
+                        <div class="d-flex justify-content-between text-muted x-small" style="max-width: 500px; margin: 0 auto;">
+                            <span id="currentProcessingFileName">filename.docx</span>
+                            <span id="processingPercentage">0%</span>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- State 4: Interactive Document Previewer -->
+                <div id="previewSection" class="glass-card rounded-4 p-4 mt-4 d-none">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h6 class="fw-bold mb-0" id="previewDocTitle">Document Preview</h6>
+                        <button id="closePreviewBtn" class="btn-close" aria-label="Close"></button>
+                    </div>
+                    <div class="preview-viewport-wrapper rounded p-3 overflow-auto" style="max-height: 600px;">
+                        <div id="docxPreviewTarget" class="docx-preview-container"></div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- Offscreen Sandbox Container for html2canvas -->
+    <div id="offscreenRenderContainer" class="offscreen-render-sandbox"></div>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/bootstrap.bundle.min.js"></script>
+    <!-- Application Logic Script -->
+    <script src="word-to-pdf.js"></script>
+</body>
+</html>
