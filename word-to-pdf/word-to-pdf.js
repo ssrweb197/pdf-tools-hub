@@ -1,11 +1,9 @@
 /**
  * Word to PDF Converter Engine
  * Completely Client-Side Architecture for GitHub Pages / Static Hosting
- * Integrates: docx-preview, JSZip, html2canvas, jsPDF
  */
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Core Elements & State Management
     const themeToggle = document.getElementById('themeToggle');
     const themeIcon = document.getElementById('themeIcon');
     const dropzoneState = document.getElementById('dropzoneState');
@@ -32,9 +30,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const currentProcessingFileName = document.getElementById('currentProcessingFileName');
     const processingPercentage = document.getElementById('processingPercentage');
 
-    let fileQueue = []; // Holds file items: { id, file, name, size, status: 'ready'|'processing'|'completed'|'error', pdfBlobUrl }
+    let fileQueue = [];
 
-    // --- Theme Toggle Logic ---
+    // Theme Toggle
     themeToggle.addEventListener('click', () => {
         const currentTheme = document.documentElement.getAttribute('data-bs-theme');
         const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
@@ -42,7 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
         themeIcon.className = newTheme === 'dark' ? 'bi bi-sun-fill text-warning fs-5' : 'bi bi-moon-stars-fill text-warning fs-5';
     });
 
-    // --- Drag & Drop Event Handling ---
+    // Drag & Drop Handling
     ['dragenter', 'dragover'].forEach(eventName => {
         dropzoneState.addEventListener(eventName, (e) => {
             e.preventDefault();
@@ -95,7 +93,6 @@ document.addEventListener('DOMContentLoaded', () => {
         previewSection.classList.add('d-none');
     });
 
-    // --- Queue Management ---
     function addFilesToQueue(files) {
         files.forEach(file => {
             const fileObj = {
@@ -173,7 +170,6 @@ document.addEventListener('DOMContentLoaded', () => {
             fileListTableBody.appendChild(tr);
         });
 
-        // Attach Row Event Listeners
         document.querySelectorAll('.preview-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 const id = e.currentTarget.getAttribute('data-id');
@@ -200,7 +196,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (state === 'processing') processingState.classList.remove('d-none');
     }
 
-    // --- Interactive Preview rendering using docx-preview ---
     async function previewDocument(id) {
         const item = fileQueue.find(i => i.id === id);
         if (!item) return;
@@ -224,7 +219,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // --- Core DOCX to PDF Conversion Processing Loop ---
     startConversionBtn.addEventListener('click', async () => {
         if (fileQueue.length === 0) return;
 
@@ -265,66 +259,73 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /**
-     * Converts DOCX file to PDF client-side without gap-inducing section splitting.
+     * Converts DOCX file to PDF cleanly section-by-section.
      */
     async function convertDocxToPdf(file, progressCallback) {
         const arrayBuffer = await file.arrayBuffer();
         
-        // Step 1: Render DOCX continuously into offscreen DOM
         offscreenRenderContainer.innerHTML = '';
-        progressCallback(15, "Rendering document structure...");
+        progressCallback(10, "Rendering document structure...");
 
         await window.docx.renderAsync(arrayBuffer, offscreenRenderContainer, null, {
-            inWrapper: false, // Prevents forced empty page section blocks
+            inWrapper: true,
             ignoreWidth: false,
             ignoreHeight: false,
             experimental: true
         });
 
-        // Give browser frame time to calculate layout
-        await new Promise(resolve => setTimeout(resolve, 400));
+        await new Promise(resolve => setTimeout(resolve, 300));
 
-        progressCallback(45, "Capturing document canvas...");
-
-        // Snapshot the unified element in a single canvas
-        const canvas = await html2canvas(offscreenRenderContainer, {
-            scale: 2, // Sharp rendering quality
-            useCORS: true,
-            logging: false,
-            backgroundColor: '#ffffff'
-        });
-
-        progressCallback(75, "Generating PDF pages...");
+        const sections = offscreenRenderContainer.querySelectorAll('section.docx');
+        if (!sections || sections.length === 0) {
+            throw new Error("Could not parse DOCX pages.");
+        }
 
         const { jsPDF } = window.jspdf;
         const pdf = new jsPDF('p', 'mm', 'a4');
-        const pdfWidth = pdf.internal.pageSize.getWidth(); // 210mm
-        const pdfHeight = pdf.internal.pageSize.getHeight(); // 297mm
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfPageHeight = pdf.internal.pageSize.getHeight();
 
-        const imgWidth = pdfWidth;
-        const imgHeight = (canvas.height * pdfWidth) / canvas.width;
-        const imgData = canvas.toDataURL('image/jpeg', 0.98);
+        const totalSections = sections.length;
 
-        let heightLeft = imgHeight;
-        let position = 0;
+        for (let idx = 0; idx < totalSections; idx++) {
+            const section = sections[idx];
+            const currentPct = 10 + Math.round(((idx + 1) / totalSections) * 85);
+            progressCallback(currentPct, `Processing page ${idx + 1} of ${totalSections}...`);
 
-        // Render Page 1
-        pdf.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
-        heightLeft -= pdfHeight;
+            const canvas = await html2canvas(section, {
+                scale: 2,
+                useCORS: true,
+                logging: false,
+                backgroundColor: '#ffffff'
+            });
 
-        // Render subsequent pages dynamically if content extends past page 1
-        while (heightLeft > 3) { // 3mm buffer avoids accidental blank final pages
-            position = heightLeft - imgHeight;
-            pdf.addPage();
+            const imgData = canvas.toDataURL('image/jpeg', 0.98);
+            const imgWidth = pdfWidth;
+            const imgHeight = (canvas.height * pdfWidth) / canvas.width;
+
+            if (idx > 0) {
+                pdf.addPage();
+            }
+
+            let heightLeft = imgHeight;
+            let position = 0;
+
             pdf.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
-            heightLeft -= pdfHeight;
+            heightLeft -= pdfPageHeight;
+
+            while (heightLeft > 5) {
+                position -= pdfPageHeight;
+                pdf.addPage();
+                pdf.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
+                heightLeft -= pdfPageHeight;
+            }
+
+            canvas.width = 0;
+            canvas.height = 0;
         }
 
         progressCallback(98, "Finalizing output...");
-
-        // Clear memory
-        canvas.width = 0;
-        canvas.height = 0;
         offscreenRenderContainer.innerHTML = '';
 
         return pdf.output('blob');
