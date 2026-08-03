@@ -140,16 +140,23 @@ body {
 }
 
 /* Offscreen Render Sandbox for HTML2Canvas */
+/* Offscreen Render Sandbox for HTML2Canvas */
 .offscreen-render-sandbox {
     position: absolute;
     top: -99999px;
     left: -99999px;
     width: 800px; /* Standard A4 ratio pixel width container */
-    visibility: hidden;
+    visibility: visible !important; /* MUST be visible for html2canvas to read elements */
+    opacity: 1 !important;
     pointer-events: none;
 }
 
 /* Ensure captured docx pages render isolated backgrounds in offscreen mode */
+.offscreen-render-sandbox .docx-wrapper {
+    background: #ffffff !important;
+    padding: 0 !important;
+}
+
 .offscreen-render-sandbox .docx-wrapper > section.docx {
     background: #ffffff !important;
     color: #000000 !important;
@@ -157,3 +164,6 @@ body {
     margin: 0 0 30px 0 !important;
     padding: 40pt !important;
 }
+
+/* Ensure captured docx pages render isolated backgrounds in offscreen mode */
+
