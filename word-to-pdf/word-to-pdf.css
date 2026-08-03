@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Word to PDF Converter CSS - Offscreen Sandbox Fixes
+   Word to PDF Converter CSS - Standard A4 Offscreen Sandbox Fixes
    ========================================================================== */
 
 /* Offscreen Render Sandbox for HTML2Canvas */
@@ -7,8 +7,8 @@
     position: fixed;
     top: 0;
     left: -9999px;
-    width: 800px;
-    background: #ffffff;
+    width: 794px !important; /* Standard A4 paper width at 96 DPI */
+    background: #ffffff !important;
     visibility: visible !important;
     opacity: 1 !important;
     z-index: -9999;
@@ -17,14 +17,33 @@
 .offscreen-render-sandbox .docx-wrapper {
     background: #ffffff !important;
     padding: 0 !important;
+    margin: 0 !important;
 }
 
 .offscreen-render-sandbox .docx-wrapper > section.docx,
 .offscreen-render-sandbox section.docx {
+    width: 794px !important;
+    min-height: 1123px !important; /* Standard A4 paper height */
     box-shadow: none !important;
-    margin: 0 !important;
-    padding: 30pt !important;
+    margin: 0 auto !important;
+    padding: 48px !important; /* Standard 0.5-inch document margins */
     background: #ffffff !important;
     color: #000000 !important;
     border: none !important;
+    box-sizing: border-box !important;
+}
+
+/* Maintain crisp text scaling & overflow protection */
+.offscreen-render-sandbox p,
+.offscreen-render-sandbox span,
+.offscreen-render-sandbox td,
+.offscreen-render-sandbox th {
+    max-width: 100% !important;
+    word-wrap: break-word !important;
+    box-sizing: border-box !important;
+}
+
+.offscreen-render-sandbox table {
+    width: 100% !important;
+    table-layout: fixed !important;
 }
