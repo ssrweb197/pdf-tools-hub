@@ -239,7 +239,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             try {
                 processingStatusTitle.textContent = `Converting Document ${i + 1} of ${totalItems}`;
-                processingStatusDetail.textContent = `Parsing DOCX structures & page breaks...`;
+                processingStatusDetail.textContent = `Parsing DOCX structures & layout...`;
 
                 const pdfBlob = await convertDocxToPdf(item.file, (percent, detail) => {
                     updateProgressBar(percent);
@@ -265,84 +265,66 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /**
-     * Converts DOCX file to PDF client-side using Canvas snapshotting and jsPDF
-     * Handled in chunked asynchronous iterations to preserve UI responsiveness for large documents.
+     * Converts DOCX file to PDF client-side without gap-inducing section splitting.
      */
     async function convertDocxToPdf(file, progressCallback) {
         const arrayBuffer = await file.arrayBuffer();
         
-        // Step 1: Render DOCX to Offscreen Container DOM
+        // Step 1: Render DOCX continuously into offscreen DOM
         offscreenRenderContainer.innerHTML = '';
-        progressCallback(10, "Rendering document structure into offscreen engine...");
+        progressCallback(15, "Rendering document structure...");
 
         await window.docx.renderAsync(arrayBuffer, offscreenRenderContainer, null, {
-            inWrapper: true,
+            inWrapper: false, // Prevents forced empty page section blocks
             ignoreWidth: false,
             ignoreHeight: false,
             experimental: true
         });
 
-        // Give browser DOM a frame to compute image dimensions and layout geometry
-        await new Promise(resolve => setTimeout(resolve, 300));
+        // Give browser frame time to calculate layout
+        await new Promise(resolve => setTimeout(resolve, 400));
 
-        // Locate document sections rendered by docx-preview
-        const sections = offscreenRenderContainer.querySelectorAll('.docx-wrapper > section.docx');
-        
-        if (!sections || sections.length === 0) {
-            throw new Error("Could not extract printable document sections from DOCX.");
-        }
+        progressCallback(45, "Capturing document canvas...");
 
-        // Initialize jsPDF (A4 format, standard mm dimensions)
+        // Snapshot the unified element in a single canvas
+        const canvas = await html2canvas(offscreenRenderContainer, {
+            scale: 2, // Sharp rendering quality
+            useCORS: true,
+            logging: false,
+            backgroundColor: '#ffffff'
+        });
+
+        progressCallback(75, "Generating PDF pages...");
+
         const { jsPDF } = window.jspdf;
         const pdf = new jsPDF('p', 'mm', 'a4');
-        const pdfWidth = pdf.internal.pageSize.getWidth();
-        const pdfHeight = pdf.internal.pageSize.getHeight();
+        const pdfWidth = pdf.internal.pageSize.getWidth(); // 210mm
+        const pdfHeight = pdf.internal.pageSize.getHeight(); // 297mm
 
-        const totalSections = sections.length;
+        const imgWidth = pdfWidth;
+        const imgHeight = (canvas.height * pdfWidth) / canvas.width;
+        const imgData = canvas.toDataURL('image/jpeg', 0.98);
 
-        for (let idx = 0; idx < totalSections; idx++) {
-            const section = sections[idx];
-            const currentPct = 10 + Math.round(((idx + 1) / totalSections) * 80);
-            progressCallback(currentPct, `Capturing page section ${idx + 1} of ${totalSections}...`);
+        let heightLeft = imgHeight;
+        let position = 0;
 
-            // Use html2canvas to render DOM section to image canvas
-            const canvas = await html2canvas(section, {
-                scale: 2, // High DPI capture for sharp crisp text rendering
-                useCORS: true,
-                logging: false,
-                backgroundColor: '#ffffff'
-            });
+        // Render Page 1
+        pdf.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
+        heightLeft -= pdfHeight;
 
-            const imgData = canvas.toDataURL('image/jpeg', 0.95);
-            const imgWidth = pdfWidth;
-            const imgHeight = (canvas.height * pdfWidth) / canvas.width;
-
-            // Handle section content spanning across continuous pages
-            let heightLeft = imgHeight;
-            let position = 0;
-
-            if (idx > 0) {
-                pdf.addPage();
-            }
-
+        // Render subsequent pages dynamically if content extends past page 1
+        while (heightLeft > 3) { // 3mm buffer avoids accidental blank final pages
+            position = heightLeft - imgHeight;
+            pdf.addPage();
             pdf.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
             heightLeft -= pdfHeight;
-
-            // Loop for long documents where single section exceeds 1 page
-            while (heightLeft > 2) {
-                position = heightLeft - imgHeight;
-                pdf.addPage();
-                pdf.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
-                heightLeft -= pdfHeight;
-            }
-
-            // Clean memory reference between loops
-            canvas.width = 0;
-            canvas.height = 0;
         }
 
-        progressCallback(98, "Finalizing PDF file stream...");
-        // Cleanup offscreen sandbox
+        progressCallback(98, "Finalizing output...");
+
+        // Clear memory
+        canvas.width = 0;
+        canvas.height = 0;
         offscreenRenderContainer.innerHTML = '';
 
         return pdf.output('blob');
