@@ -274,7 +274,7 @@ document.addEventListener('DOMContentLoaded', () => {
             experimental: true
         });
 
-        await new Promise(resolve => setTimeout(resolve, 300));
+        await new Promise(resolve => setTimeout(resolve, 400));
 
         const sections = offscreenRenderContainer.querySelectorAll('section.docx');
         if (!sections || sections.length === 0) {
@@ -294,10 +294,11 @@ document.addEventListener('DOMContentLoaded', () => {
             progressCallback(currentPct, `Processing page ${idx + 1} of ${totalSections}...`);
 
             const canvas = await html2canvas(section, {
-                scale: 2,
+                scale: 2, // Sharpness quality multiplier
                 useCORS: true,
                 logging: false,
-                backgroundColor: '#ffffff'
+                backgroundColor: '#ffffff',
+                windowWidth: 794 // Match exact CSS A4 sandbox viewport
             });
 
             const imgData = canvas.toDataURL('image/jpeg', 0.98);
@@ -308,18 +309,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 pdf.addPage();
             }
 
-            let heightLeft = imgHeight;
-            let position = 0;
-
-            pdf.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
-            heightLeft -= pdfPageHeight;
-
-            while (heightLeft > 5) {
-                position -= pdfPageHeight;
-                pdf.addPage();
-                pdf.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
-                heightLeft -= pdfPageHeight;
-            }
+            // Standardize output image rendering onto A4 pages
+            pdf.addImage(imgData, 'JPEG', 0, 0, imgWidth, Math.min(imgHeight, pdfPageHeight));
 
             canvas.width = 0;
             canvas.height = 0;
