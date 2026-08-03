@@ -1,161 +1,30 @@
 /* ==========================================================================
-   Word to PDF Converter - Premium Glassmorphism & Modern UI CSS
-   Target environment: Browser / Static Host (GitHub Pages)
+   Word to PDF Converter CSS - Offscreen Sandbox Fixes
    ========================================================================== */
-
-:root {
-    --font-family: 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    --primary-gradient: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
-    --bg-light: #f8fafc;
-    --card-bg-light: rgba(255, 255, 255, 0.85);
-    --border-light: rgba(226, 232, 240, 0.8);
-    --text-main: #0f172a;
-    --text-muted: #64748b;
-    --glass-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.07);
-}
-
-[data-bs-theme="dark"] {
-    --bg-light: #0b0f19;
-    --card-bg-light: rgba(17, 24, 39, 0.85);
-    --border-light: rgba(255, 255, 255, 0.08);
-    --text-main: #f8fafc;
-    --text-muted: #94a3b8;
-    --glass-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5);
-}
-
-body {
-    font-family: var(--font-family);
-    background-color: var(--bg-light);
-    color: var(--text-main);
-    transition: background-color 0.3s ease, color 0.3s ease;
-    overflow-x: hidden;
-    min-height: 100vh;
-}
-
-.x-small {
-    font-size: 0.75rem;
-}
-
-/* Glassmorphism Classes */
-.glass-nav {
-    background: var(--card-bg-light);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border-bottom: 1px solid var(--border-light);
-}
-
-.glass-card {
-    background: var(--card-bg-light);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid var(--border-light);
-    box-shadow: var(--glass-shadow);
-}
-
-.glass-table {
-    --bs-table-bg: transparent;
-    color: var(--text-main);
-}
-
-/* Brand & Icon Accents */
-.brand-icon {
-    width: 40px;
-    height: 40px;
-}
-
-.bg-gradient-primary {
-    background: var(--primary-gradient) !important;
-}
-
-.text-primary-gradient {
-    background: var(--primary-gradient);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
-
-/* Upload Dropzone */
-.upload-dropzone {
-    border: 2px dashed #3b82f6;
-    border-radius: 24px;
-    padding: 3.5rem 2rem;
-    cursor: pointer;
-    background: rgba(59, 130, 246, 0.02);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.upload-dropzone:hover, .upload-dropzone.dragover {
-    background: rgba(59, 130, 246, 0.08);
-    border-color: #2563eb;
-    transform: scale(1.01);
-}
-
-.upload-icon-circle {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-/* Buttons & Controls */
-.hover-grow {
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-.hover-grow:hover {
-    transform: translateY(-2px);
-}
-
-.cursor-pointer {
-    cursor: pointer;
-}
-
-.feature-icon {
-    width: 48px;
-    height: 48px;
-}
-
-/* Progress bar background animation */
-.bg-primary-gradient {
-    background: var(--primary-gradient) !important;
-}
-
-/* docx-preview wrapper custom styling */
-.preview-viewport-wrapper {
-    background-color: #525659;
-    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
-}
-
-.docx-preview-container .docx-wrapper {
-    background: transparent !important;
-    padding: 15px !important;
-}
-
-.docx-preview-container .docx-wrapper > section.docx {
-    box-shadow: 0 10px 25px rgba(0,0,0,0.3) !important;
-    margin-bottom: 20px !important;
-    border-radius: 4px;
-    background: white !important;
-    color: black !important;
-}
 
 /* Offscreen Render Sandbox for HTML2Canvas */
 .offscreen-render-sandbox {
-    position: absolute;
-    top: -99999px;
-    left: -99999px;
+    position: fixed;
+    top: 0;
+    left: -9999px;
     width: 800px;
     background: #ffffff;
-    visibility: visible !important; /* MUST be visible for html2canvas to read elements */
+    visibility: visible !important;
     opacity: 1 !important;
-    pointer-events: none;
+    z-index: -9999;
 }
 
-/* Ensure continuous, natural flow without artificial gaps */
+.offscreen-render-sandbox .docx-wrapper {
+    background: #ffffff !important;
+    padding: 0 !important;
+}
+
+.offscreen-render-sandbox .docx-wrapper > section.docx,
 .offscreen-render-sandbox section.docx {
     box-shadow: none !important;
     margin: 0 !important;
-    padding: 20pt !important;
+    padding: 30pt !important;
     background: #ffffff !important;
     color: #000000 !important;
+    border: none !important;
 }
